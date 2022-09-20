@@ -1,0 +1,62 @@
+{
+    "name": "just-better/laravel-magento-client",
+    "description": "A client to interact with Magneto",
+    "type": "package",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.4",
+        "laravel/framework": "^9.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.1",
+        "orchestra/testbench": "^7.0",
+        "phpunit/phpunit": "^9.5.10",
+        "nunomaduro/larastan": "^2.1",
+        "phpstan/phpstan-mockery": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Vincent Boon",
+            "email": "vincent@justbetter.nl",
+            "role": "Developer"
+        },
+        {
+            "name": "Ramon Rietdijk",
+            "email": "ramon@justbetter.nl",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JustBetter\\MagentoClient\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JustBetter\\MagentoClient\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan",
+        "style": "pint --test",
+        "quality": [
+            "@test",
+            "@analyse",
+            "@style"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JustBetter\\MagentoClient\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
