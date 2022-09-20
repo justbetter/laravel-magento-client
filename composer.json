@@ -1,5 +1,5 @@
 {
-    "name": "just-better/laravel-magento-client",
+    "name": "justbetter/laravel-magento-client",
     "description": "A client to interact with Magneto",
     "type": "package",
     "license": "MIT",

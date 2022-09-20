@@ -38,7 +38,7 @@ class Example
 Require this package:
 
 ```shell
-composer require just-better/laravel-magento-client
+composer require justbetter/laravel-magento-client
 ```
 
 Add the following to your `.env`:
