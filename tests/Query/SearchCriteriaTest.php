@@ -126,10 +126,9 @@ class SearchCriteriaTest extends TestCase
 
     public function test_it_throws_exception_for_invalid_operator(): void
     {
-        $this->assertThrows(
-            fn () => SearchCriteria::make()->where('field', 'invalid_operator', ''),
-            InvalidOperatorException::class
-        );
+        $this->expectException(InvalidOperatorException::class);
+
+        SearchCriteria::make()->where('field', 'invalid_operator', '');
     }
 
     public function test_it_adds_select(): void
