@@ -24,9 +24,11 @@ trait LazilyRetrievesPages
                     ->get($endpoint, $search->paginate($currentPage, $pageSize)->get())
                     ->throw();
 
-                yield from $response->json('items', []);
+                $items = $response->json('items', []);
 
-                $hasNextPage = $currentPage * $pageSize < $response->json('total_count');
+                yield from $items;
+
+                $hasNextPage = count($items) >= $pageSize;
                 $currentPage++;
             }
         });
