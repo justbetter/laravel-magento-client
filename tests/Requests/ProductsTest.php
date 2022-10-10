@@ -36,11 +36,12 @@ class ProductsTest extends TestCase
             'http://magento.test/rest/all/V1/products*' => Http::sequence([
                 Http::response([
                     'items' => [['sku' => '::sku_1::']],
-                    'total_count' => 2,
                 ]),
                 Http::response([
                     'items' => [['sku' => '::sku_2::']],
-                    'total_count' => 2,
+                ]),
+                Http::response([
+                    'items' => [],
                 ]),
             ]),
         ]);

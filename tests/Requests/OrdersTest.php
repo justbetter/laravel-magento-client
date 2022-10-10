@@ -60,11 +60,12 @@ class OrdersTest extends TestCase
             'http://magento.test/rest/all/V1/orders*' => Http::sequence([
                 Http::response([
                     'items' => [['increment_id' => '::increment_id_1::']],
-                    'total_count' => 2,
                 ]),
                 Http::response([
                     'items' => [['increment_id' => '::increment_id_2::']],
-                    'total_count' => 2,
+                ]),
+                Http::response([
+                    'items' => [],
                 ]),
             ]),
         ]);
