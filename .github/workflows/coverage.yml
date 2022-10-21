@@ -1,0 +1,38 @@
+name: coverage
+
+on: ['push', 'pull_request']
+
+jobs:
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ubuntu-22.04]
+                php: [8.1]
+                laravel: [9.*]
+                stability: [prefer-stable]
+                include:
+                    - laravel: 9.*
+                      testbench: 7.*
+
+        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo, xdebug
+                  coverage: xdebug
+
+            - name: Install dependencies
+              run: |
+                  composer config allow-plugins.pestphp/pest-plugin true
+                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" pestphp/pest --no-interaction --no-update
+                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+            - name: Execute tests
+              run: XDEBUG_MODE=coverage php vendor/bin/pest --coverage --min=100
