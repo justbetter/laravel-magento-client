@@ -40,6 +40,8 @@ class Example
 
 ```
 
+> Looking to synchronize [prices](https://github.com/justbetter/laravel-magento-prices) or [stock](https://github.com/justbetter/laravel-magento-stock) to Magento?
+
 ## Installation and Configuration
 
 Require this package:
