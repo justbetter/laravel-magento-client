@@ -54,4 +54,17 @@ class Magento
             $path,
         ]);
     }
+
+    public static function fake(): void
+    {
+        config()->set('magento', [
+            'base_url' => 'http://magento.test',
+            'base_path' => 'rest',
+            'store_code' => 'all',
+            'version' => 'V1',
+            'access_token' => '::token::',
+            'timeout' => 30,
+            'connect_timeout' => 10,
+        ]);
+    }
 }
