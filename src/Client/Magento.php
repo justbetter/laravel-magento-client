@@ -23,26 +23,34 @@ class Magento
 
     public function get(string $path, array $data = []): Response
     {
-        return $this->request->build()
-            ->get($this->getUrl($path), $data);
+        /** @var Response $response */
+        $response = $this->request->build()->get($this->getUrl($path), $data);
+
+        return $response;
     }
 
     public function post(string $path, array $data = []): Response
     {
-        return $this->request->build()
-            ->post($this->getUrl($path), $data);
+        /** @var Response $response */
+        $response = $this->request->build()->post($this->getUrl($path), $data);
+
+        return $response;
     }
 
     public function patch(string $path, array $data = []): Response
     {
-        return $this->request->build()
-            ->patch($this->getUrl($path), $data);
+        /** @var Response $response */
+        $response = $this->request->build()->patch($this->getUrl($path), $data);
+
+        return $response;
     }
 
     public function put(string $path, array $data = []): Response
     {
-        return $this->request->build()
-            ->put($this->getUrl($path), $data);
+        /** @var Response $response */
+        $response = $this->request->build()->put($this->getUrl($path), $data);
+
+        return $response;
     }
 
     public function getUrl(string $path): string
