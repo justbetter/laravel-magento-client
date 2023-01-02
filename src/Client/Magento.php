@@ -14,7 +14,7 @@ class Magento
     ) {
     }
 
-    public function store(string $store): static
+    public function store(?string $store = null): static
     {
         $this->storeCode = $store;
 
