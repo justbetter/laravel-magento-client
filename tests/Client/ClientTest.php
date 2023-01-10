@@ -103,6 +103,24 @@ class ClientTest extends TestCase
         });
     }
 
+    public function test_it_can_make_a_delete_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/V1/products/1' => Http::response([], 204),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->delete('products/1');
+        $this->assertEquals(204, $response->status());
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'DELETE' &&
+                $request->url() == 'http://magento.test/rest/all/V1/products/1';
+        });
+    }
+
     public function test_it_can_set_store_code(): void
     {
         Http::fake([

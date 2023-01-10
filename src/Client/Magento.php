@@ -53,6 +53,14 @@ class Magento
         return $response;
     }
 
+    public function delete(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->delete($this->getUrl($path), $data);
+
+        return $response;
+    }
+
     public function getUrl(string $path): string
     {
         return implode('/', [
