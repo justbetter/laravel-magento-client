@@ -1,5 +1,11 @@
 # Changelog 
 
+## 1.0.7 - 2023-01-25
+
+Fix typo in composer.json
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.0.6...1.0.7
+
 ## 1.0.6 - 2023-01-12
 
 **Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.0.5...1.0.6
