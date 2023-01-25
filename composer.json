@@ -1,6 +1,6 @@
 {
     "name": "justbetter/laravel-magento-client",
-    "description": "A client to interact with Magneto",
+    "description": "A client to interact with Magento",
     "type": "package",
     "license": "MIT",
     "require": {
