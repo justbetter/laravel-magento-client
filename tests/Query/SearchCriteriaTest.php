@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoClient\Tests\Query;
 
 use Exception;
-use JustBetter\MagentoClient\Exceptions\InvalidOperatorException;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Symfony\Component\VarDumper\VarDumper;
@@ -22,7 +21,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_simple_where(): void
+    public function test_it_can_add_a_simple_where(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '::some-sku::')
@@ -35,7 +34,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_multile_wheres(): void
+    public function test_it_can_add_multiple_wheres(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
@@ -52,7 +51,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_or_wheres(): void
+    public function test_it_can_add_orWhere(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
@@ -69,7 +68,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_multiple_or_wheres(): void
+    public function test_it_can_add_multiple_orWhere(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
@@ -98,7 +97,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_wherein(): void
+    public function test_it_can_add_whereIn(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -111,7 +110,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_wherenotin(): void
+    public function test_it_can_add_whereNotIn(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereNotIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -124,14 +123,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_throws_exception_for_invalid_operator(): void
-    {
-        $this->expectException(InvalidOperatorException::class);
-
-        SearchCriteria::make()->where('field', 'invalid_operator', '');
-    }
-
-    public function test_it_adds_select(): void
+    public function test_it_can_add_a_field_selection(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->select(['sku', 'price'])

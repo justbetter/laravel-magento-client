@@ -48,8 +48,6 @@ class SearchCriteria
             $operator = '=';
         }
 
-        $this->grammar->checkOperator($operator);
-
         $currentFilterGroup = $filterGroup ?? $this->currentFilterGroup;
 
         $prefix = "searchCriteria[filter_groups][$currentFilterGroup][filters][$filterIndex]";
