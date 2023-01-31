@@ -40,9 +40,13 @@ class Example
 
 ```
 
-> Looking to synchronize [prices](https://github.com/justbetter/laravel-magento-prices) or [stock](https://github.com/justbetter/laravel-magento-stock) to Magento?
+> Looking to synchronize [prices](https://github.com/justbetter/laravel-magento-prices)
+> or [stock](https://github.com/justbetter/laravel-magento-stock) to Magento?
 
 ## Installation and Configuration
+
+> Are you coming from `grayloon/laravel-magento-api`? We have written
+> a [migration guide](./docs/migrations/GRAYLOON.md)!
 
 Require this package:
 
@@ -62,7 +66,7 @@ MAGENTO_ACCESS_TOKEN=
 This package uses an integration token, since 2.4.4 the default is an OAuth token. This is not implemented yet (feel
 free to make a PR).
 See [this page](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-token) for more
-information
+information.
 
 ## Usage
 
