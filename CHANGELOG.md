@@ -1,5 +1,14 @@
 # Changelog 
 
+## 1.0.8 - 2023-01-31
+
+## What's Changed
+* Updated grammar by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/9
+* Grayloon migration guide by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/10
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.0.7...1.0.8
+
 ## 1.0.7 - 2023-01-25
 
 Fix typo in composer.json
