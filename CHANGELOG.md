@@ -1,5 +1,13 @@
 # Changelog 
 
+## 1.0.9 - 2023-02-22
+
+## What's Changed
+* Lazily load results from Magento by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/13
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.0.8...1.0.9
+
 ## 1.0.8 - 2023-01-31
 
 ## What's Changed
