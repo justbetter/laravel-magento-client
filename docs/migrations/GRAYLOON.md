@@ -42,8 +42,8 @@ All references to Grayloon have to be updated to use the new client.
 + use JustBetter\MagentoClient\Client\Magento;
 ```
 
-The new client does not have API-classes. Calls to endpoints have to be made via de Magento client directly or by using
-one of our predefined request classes. See the [README.md](../../README.md) for more information, there you will also
+The new client does not have API-classes. Calls to endpoints have to be made via de Magento client. See
+the [README.md](../../README.md) for more information, there you will also
 see an example of loading results lazily.
 
 Our client is built to be used via dependency injection and does not have a facade.

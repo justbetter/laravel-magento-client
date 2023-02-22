@@ -34,7 +34,12 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_post_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response(['product' => ['entity_id' => 1, 'sku' => '::some-sku::']]),
+            'http://magento.test/rest/all/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
         ]);
 
         /** @var Magento $magento */
@@ -58,7 +63,12 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_put_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response(['product' => ['entity_id' => 1, 'sku' => '::some-sku::']]),
+            'http://magento.test/rest/all/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
         ]);
 
         /** @var Magento $magento */
@@ -82,7 +92,12 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_patch_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response(['product' => ['entity_id' => 1, 'sku' => '::some-sku::']]),
+            'http://magento.test/rest/all/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
         ]);
 
         /** @var Magento $magento */
@@ -119,6 +134,40 @@ class ClientTest extends TestCase
             return $request->method() === 'DELETE' &&
                 $request->url() == 'http://magento.test/rest/all/V1/products/1';
         });
+    }
+
+    public function test_it_can_get_results_lazily(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=1' => Http::response([
+                'items' => [
+                    ['sku' => '1000'],
+                    ['sku' => '2000'],
+                    ['sku' => '3000'],
+                    ['sku' => '4000'],
+                    ['sku' => '5000'],
+                ],
+            ]),
+            'http://magento.test/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=2' => Http::response([
+                'items' => [
+                    ['sku' => '6000'],
+                    ['sku' => '7000'],
+                ],
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $products = $magento->lazy('products', [
+            'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'neq',
+            'searchCriteria[filter_groups][0][filters][0][value]' => 'something',
+        ], 5);
+
+        $collection = $products->collect();
+
+        $this->assertEquals(7, $collection->count());
     }
 
     public function test_it_can_set_store_code(): void

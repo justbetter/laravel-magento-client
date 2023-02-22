@@ -7,6 +7,7 @@ use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Concerns\LazilyRetrievesPages;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 
+/** @deprecated  */
 class Orders
 {
     use LazilyRetrievesPages;
