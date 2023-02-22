@@ -16,7 +16,6 @@ class Example
 {
     public function __construct(
         protected \JustBetter\MagentoClient\Client\Magento $magento,
-        protected \JustBetter\MagentoClient\Requests\Orders $orders
     ) {
     }
 
@@ -32,7 +31,7 @@ class Example
         $searchCriteria = \JustBetter\MagentoClient\Query\SearchCriteria::make()
             ->where('state', 'processing');
 
-        foreach ($this->orders->lazy($searchCriteria) as $order) {
+        foreach ($this->magento->lazy('orders', $searchCriteria->get()) as $order) {
             $retrievedOrders[] = $order['increment_id'];
         }
     }
@@ -91,7 +90,7 @@ After you got an instance you can use the `get`, `post`, `put` and `patch` metho
 
 ### SearchCriteria / Filtering
 
-To easily create searchcriteria you can use the `\JustBetter\MagentoClient\Query\SearchCriteria` class.
+To easily create search criteria you can use the `\JustBetter\MagentoClient\Query\SearchCriteria` class.
 For example:
 
 ```php
@@ -105,7 +104,9 @@ $search = \JustBetter\MagentoClient\Query\SearchCriteria::make()
         ->get();
 ```
 
-### Pre defined requests
+### Pre defined requests (deprecated)
+
+> Requests are deprecated as the `lazy` functionality has been made available in the client itself.
 
 This package comes bundled with a few predefined request so that you do not have to reinvent the wheel.
 

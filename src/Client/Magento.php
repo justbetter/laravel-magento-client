@@ -2,7 +2,10 @@
 
 namespace JustBetter\MagentoClient\Client;
 
+use Generator;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Contracts\BuildsRequest;
 
 class Magento
@@ -59,6 +62,31 @@ class Magento
         $response = $this->request->build()->delete($this->getUrl($path), $data);
 
         return $response;
+    }
+
+    public function lazy(string $path, array $data = [], int $pageSize = 100): LazyCollection
+    {
+        return LazyCollection::make(function () use ($path, $data, $pageSize): Generator {
+            $currentPage = 1;
+            $hasNextPage = true;
+
+            while ($hasNextPage) {
+                $data['searchCriteria[pageSize]'] = $pageSize;
+                $data['searchCriteria[currentPage]'] = $currentPage;
+
+                $response = $this->get($path, $data)->throw();
+
+                /** @var Enumerable<int, array<string, mixed>> $items */
+                $items = $response->collect('items');
+
+                foreach ($items as $item) {
+                    yield $item;
+                }
+
+                $hasNextPage = $items->count() >= $pageSize;
+                $currentPage++;
+            }
+        });
     }
 
     public function getUrl(string $path): string

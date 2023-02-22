@@ -6,7 +6,11 @@ use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 
-/** @property Magento $magento */
+/**
+ * @property Magento $magento
+ *
+ * @deprecated
+ */
 trait LazilyRetrievesPages
 {
     public function retrieveLazily(string $endpoint, int $pageSize, ?SearchCriteria $searchCriteria = null): LazyCollection
