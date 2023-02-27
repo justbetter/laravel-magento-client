@@ -1,5 +1,13 @@
 # Changelog 
 
+## 1.1.0 - 2023-02-24
+
+## What's Changed
+* Support for Laravel 10 by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/14
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.0.9...1.1.0
+
 ## 1.0.9 - 2023-02-22
 
 ## What's Changed
