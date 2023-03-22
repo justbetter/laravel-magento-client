@@ -110,6 +110,24 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
+    public function test_it_can_add_orWhereIn(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->whereIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
+            ->orWhereIn('ean', ['::sku_1::', '::sku_2::', '::sku_3::'])
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'in',
+            'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
+
+            'searchCriteria[filter_groups][0][filters][1][field]' => 'ean',
+            'searchCriteria[filter_groups][0][filters][1][condition_type]' => 'in',
+            'searchCriteria[filter_groups][0][filters][1][value]' => '::sku_1::,::sku_2::,::sku_3::',
+        ], $searchCriteria);
+    }
+
     public function test_it_can_add_whereNotIn(): void
     {
         $searchCriteria = SearchCriteria::make()
@@ -120,6 +138,24 @@ class SearchCriteriaTest extends TestCase
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'nin',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_orWhereNotIn(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->whereNotIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
+            ->orWhereNotIn('ean', ['::sku_1::', '::sku_2::', '::sku_3::'])
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'nin',
+            'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
+
+            'searchCriteria[filter_groups][0][filters][1][field]' => 'ean',
+            'searchCriteria[filter_groups][0][filters][1][condition_type]' => 'nin',
+            'searchCriteria[filter_groups][0][filters][1][value]' => '::sku_1::,::sku_2::,::sku_3::',
         ], $searchCriteria);
     }
 
@@ -150,5 +186,67 @@ class SearchCriteriaTest extends TestCase
         });
 
         $searchCriteria->dd();
+    }
+
+    public function test_it_can_add_whereNull(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->where('sku', '=', '::sku::')
+            ->whereNull('::some_field::')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
+            'searchCriteria[filter_groups][0][filters][0][value]' => '::sku::',
+            'searchCriteria[filter_groups][1][filters][0][field]' => '::some_field::',
+            'searchCriteria[filter_groups][1][filters][0][condition_type]' => 'null',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_orWhereNull(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->whereNull('::some_field::')
+            ->orWhereNull('::some_other_field::')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => '::some_field::',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'null',
+            'searchCriteria[filter_groups][0][filters][1][field]' => '::some_other_field::',
+            'searchCriteria[filter_groups][0][filters][1][condition_type]' => 'null',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_whereNotNull(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->where('sku', '=', '::sku::')
+            ->whereNotNull('::some_field::')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
+            'searchCriteria[filter_groups][0][filters][0][value]' => '::sku::',
+            'searchCriteria[filter_groups][1][filters][0][field]' => '::some_field::',
+            'searchCriteria[filter_groups][1][filters][0][condition_type]' => 'notnull',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_orWhereNotNull(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->whereNotNull('::some_field::')
+            ->orWhereNotNull('::some_other_field::')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[filter_groups][0][filters][0][field]' => '::some_field::',
+            'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'notnull',
+            'searchCriteria[filter_groups][0][filters][1][field]' => '::some_other_field::',
+            'searchCriteria[filter_groups][0][filters][1][condition_type]' => 'notnull',
+        ], $searchCriteria);
     }
 }
