@@ -100,9 +100,12 @@ $search = \JustBetter\MagentoClient\Query\SearchCriteria::make()
         ->where('sku', '!=', '123')
         ->orWhere('price', '>', 10),
         ->whereIn('sku', ['123', '456'])
+        ->orWhereNull('name')
         ->paginate(1, 50)
         ->get();
 ```
+
+You can view more examples in [Magento's documentation](https://developer.adobe.com/commerce/webapi/rest/use-rest/performing-searches/).
 
 ### Pre defined requests (deprecated)
 
