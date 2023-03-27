@@ -9,8 +9,9 @@ use JustBetter\MagentoClient\Contracts\RetrievesBearerToken;
 
 class BuildRequest implements BuildsRequest
 {
-    public function __construct(protected RetrievesBearerToken $bearerToken)
-    {
+    public function __construct(
+        protected RetrievesBearerToken $bearerToken
+    ) {
     }
 
     public function build(): PendingRequest
