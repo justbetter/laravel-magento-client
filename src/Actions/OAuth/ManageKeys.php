@@ -1,12 +1,13 @@
 <?php
 
-namespace JustBetter\MagentoClient\Concerns;
+namespace JustBetter\MagentoClient\Actions\OAuth;
 
 use Illuminate\Support\Facades\Storage;
+use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 
-trait InteractsWithOAuthSecretFile
+class ManageKeys implements ManagesKeys
 {
-    public function read(): ?array
+    public function get(): array
     {
         /** @var string $disk */
         $disk = config('magento.oauth.file.disk');
@@ -16,10 +17,10 @@ trait InteractsWithOAuthSecretFile
 
         $content = Storage::disk($disk)->get($path);
 
-        return json_decode($content, true);
+        return json_decode($content, true) ?? [];
     }
 
-    public function write(array $data): void
+    public function set(array $data): void
     {
         /** @var string $disk */
         $disk = config('magento.oauth.file.disk');
@@ -31,5 +32,17 @@ trait InteractsWithOAuthSecretFile
         $visibility = config('magento.oauth.file.visibility');
 
         Storage::disk($disk)->put($path, json_encode($data), $visibility);
+    }
+
+    public function merge(array $data): void
+    {
+        $merged = array_merge($this->get(), $data);
+
+        $this->set($merged);
+    }
+
+    public static function bind(): void
+    {
+        app()->singleton(ManagesKeys::class, static::class);
     }
 }

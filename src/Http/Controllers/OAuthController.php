@@ -3,23 +3,29 @@
 namespace JustBetter\MagentoClient\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use JustBetter\MagentoClient\Contracts\OAuth\StoresIntegrationDetails;
+use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
+use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
+use JustBetter\MagentoClient\Http\Requests\CallbackRequest;
+use JustBetter\MagentoClient\Http\Requests\IdentityRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class OAuthController extends Controller
 {
-    public function identity(Request $request): RedirectResponse
+    public function identity(IdentityRequest $request, ManagesKeys $keys): RedirectResponse
     {
-        // store consumer key
+        $keys->merge(
+            $request->validated(),
+        );
 
-        return redirect()->to($request->get('success_call_back'));
+        return redirect()->to($request->success_call_back);
     }
 
-    public function callback(Request $request, StoresIntegrationDetails $contract): Response
+    public function callback(CallbackRequest $request, RequestAccessToken $requestAccessToken): Response
     {
-        $contract->store($request->all());
+        $requestAccessToken->request(
+            $request->validated(),
+        );
 
         return response()->json();
     }

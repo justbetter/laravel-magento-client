@@ -2,12 +2,14 @@
 
 namespace JustBetter\MagentoClient;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoClient\Actions\AuthenticateRequest;
 use JustBetter\MagentoClient\Actions\BuildRequest;
+use JustBetter\MagentoClient\Actions\OAuth\ManageKeys;
+use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
 use JustBetter\MagentoClient\Actions\OAuth\RetrieveAccessToken;
 use JustBetter\MagentoClient\Actions\OAuth\StoreIntegrationDetails;
-use JustBetter\MagentoClient\Actions\RetrieveIntegrationToken;
-use Illuminate\Support\Facades\Route;
 use JustBetter\MagentoClient\Enums\AuthenticationMethod;
 
 class ServiceProvider extends BaseServiceProvider
@@ -28,11 +30,10 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerActions(): static
     {
-        RetrieveIntegrationToken::bind();
+        ManageKeys::bind();
+        RequestAccessToken::bind();
+        AuthenticateRequest::bind();
         BuildRequest::bind();
-
-        RetrieveAccessToken::bind();
-        StoreIntegrationDetails::bind();
 
         return $this;
     }
@@ -61,8 +62,7 @@ class ServiceProvider extends BaseServiceProvider
         $authenticationMethod = AuthenticationMethod::from($method);
 
         if (! $this->app->routesAreCached() && $authenticationMethod === AuthenticationMethod::OAuth) {
-            Route::middleware(config('magento.oauth.middleware'))
-                ->prefix(config('magento.oauth.prefix'))
+            Route::prefix(config('magento.oauth.prefix'))
                 ->group(__DIR__.'/../routes/web.php');
         }
 

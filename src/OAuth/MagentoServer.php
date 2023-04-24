@@ -9,7 +9,7 @@ use League\OAuth1\Client\Server\Server;
 
 class MagentoServer extends Server
 {
-    protected string $verifier;
+    public string $verifier;
 
     public function urlTemporaryCredentials(): string
     {
