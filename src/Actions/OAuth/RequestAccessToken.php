@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoClient\Actions\OAuth;
 
+use Illuminate\Support\Facades\Validator;
 use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
 use JustBetter\MagentoClient\OAuth\HmacSha256Signature;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
@@ -14,40 +15,43 @@ class RequestAccessToken implements RequestsAccessToken
     ) {
     }
 
-    public function request(array $data): void
+    public function request(string $key): void
     {
         $keys = $this->keys->get();
 
-        if (! isset($keys['oauth_consumer_key']) || $keys['oauth_consumer_key'] !== $data['oauth_consumer_key']) {
+        $callback = $keys['callback'] ?? [];
+
+        Validator::validate($callback, [
+            'oauth_consumer_key' => 'required|string',
+            'oauth_consumer_secret' => 'required|string',
+            'oauth_verifier' => 'required|string',
+        ]);
+
+        if ($callback['oauth_consumer_key'] !== $key) {
             abort(403);
         }
 
-        $this->keys->set($data);
-
-        $keys = $data;
-
         $credentials = new ClientCredentials();
-        $credentials->setIdentifier($keys['oauth_consumer_key']);
-        $credentials->setSecret($keys['oauth_consumer_secret']);
+        $credentials->setIdentifier($callback['oauth_consumer_key']);
+        $credentials->setSecret($callback['oauth_consumer_secret']);
         $credentials->setCallbackUri(route('magento.oauth.callback'));
 
         $server = new MagentoServer($credentials, new HmacSha256Signature($credentials));
 
         $temporaryCredentials = $server->getTemporaryCredentials();
 
-        $keys['request_token'] = $temporaryCredentials->getIdentifier();
-        $keys['request_token_secret'] = $temporaryCredentials->getSecret();
-
         $tokenCredentials = $server->getTokenCredentials(
             $temporaryCredentials,
             $temporaryCredentials->getIdentifier(),
-            $keys['oauth_verifier']
+            $callback['oauth_verifier']
         );
 
-        $keys['access_token'] = $tokenCredentials->getIdentifier();
-        $keys['access_token_secret'] = $tokenCredentials->getSecret();
+        $auth['access_token'] = $tokenCredentials->getIdentifier();
+        $auth['access_token_secret'] = $tokenCredentials->getSecret();
 
-        $this->keys->set($keys);
+        $this->keys->set(
+            array_merge($callback, $auth),
+        );
     }
 
     public static function bind(): void

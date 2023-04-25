@@ -22,9 +22,9 @@ class CallbackRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'oauth_consumer_key' => 'required|string',
-            'oauth_consumer_secret' => 'required|string',
-            'oauth_verifier' => 'required|string',
+            'oauth_consumer_key' => 'required|string|max:32',
+            'oauth_consumer_secret' => 'required|string|max:32',
+            'oauth_verifier' => 'required|string|max:32',
         ];
     }
 }

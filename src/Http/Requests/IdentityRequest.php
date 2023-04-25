@@ -21,8 +21,8 @@ class IdentityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'oauth_consumer_key' => 'required|string',
-            'success_call_back' => 'required|string',
+            'oauth_consumer_key' => 'required|string|max:32',
+            'success_call_back' => 'required|string|max:4096',
         ];
     }
 }

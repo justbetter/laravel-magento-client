@@ -4,5 +4,5 @@ namespace JustBetter\MagentoClient\Contracts\OAuth;
 
 interface RequestsAccessToken
 {
-    public function request(array $data): void;
+    public function request(string $key): void;
 }

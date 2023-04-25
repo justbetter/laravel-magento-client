@@ -12,21 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OAuthController extends Controller
 {
-    public function identity(IdentityRequest $request, ManagesKeys $keys): RedirectResponse
+    public function callback(CallbackRequest $request, ManagesKeys $keys): Response
     {
-        $keys->merge(
-            $request->validated(),
+        $keys->merge([
+            'callback' => $request->validated(),
+        ]);
+
+        return response()->json();
+    }
+
+    public function identity(IdentityRequest $request, RequestAccessToken $requestAccessToken): RedirectResponse
+    {
+        $requestAccessToken->request(
+            $request->oauth_consumer_key,
         );
 
         return redirect()->to($request->success_call_back);
-    }
-
-    public function callback(CallbackRequest $request, RequestAccessToken $requestAccessToken): Response
-    {
-        $requestAccessToken->request(
-            $request->validated(),
-        );
-
-        return response()->json();
     }
 }
