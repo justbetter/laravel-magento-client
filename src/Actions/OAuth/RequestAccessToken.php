@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoClient\Actions\OAuth;
 
 use Illuminate\Support\Facades\Validator;
+use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
 use JustBetter\MagentoClient\OAuth\HmacSha256Signature;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
@@ -11,7 +12,7 @@ use League\OAuth1\Client\Credentials\ClientCredentials;
 class RequestAccessToken implements RequestsAccessToken
 {
     public function __construct(
-        protected ManageKeys $keys
+        protected ManagesKeys $keys
     ) {
     }
 
@@ -36,7 +37,11 @@ class RequestAccessToken implements RequestsAccessToken
         $credentials->setSecret($callback['oauth_consumer_secret']);
         $credentials->setCallbackUri(route('magento.oauth.callback'));
 
-        $server = new MagentoServer($credentials, new HmacSha256Signature($credentials));
+        /** @var MagentoServer $server */
+        $server = app()->makeWith(MagentoServer::class, [
+            'clientCredentials' => $credentials,
+            'signature' => new HmacSha256Signature($credentials),
+        ]);
 
         $temporaryCredentials = $server->getTemporaryCredentials();
 

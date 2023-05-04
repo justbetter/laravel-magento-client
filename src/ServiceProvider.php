@@ -8,9 +8,7 @@ use JustBetter\MagentoClient\Actions\AuthenticateRequest;
 use JustBetter\MagentoClient\Actions\BuildRequest;
 use JustBetter\MagentoClient\Actions\OAuth\ManageKeys;
 use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
-use JustBetter\MagentoClient\Actions\OAuth\RetrieveAccessToken;
-use JustBetter\MagentoClient\Actions\OAuth\StoreIntegrationDetails;
-use JustBetter\MagentoClient\Enums\AuthenticationMethod;
+use JustBetter\MagentoClient\Http\Middleware\OAuthMiddleware;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -56,13 +54,9 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function bootRoutes(): static
     {
-        /** @var string $method */
-        $method = config('magento.authentication_method');
-
-        $authenticationMethod = AuthenticationMethod::from($method);
-
-        if (! $this->app->routesAreCached() && $authenticationMethod === AuthenticationMethod::OAuth) {
+        if (! $this->app->routesAreCached()) {
             Route::prefix(config('magento.oauth.prefix'))
+                ->middleware([OAuthMiddleware::class])
                 ->group(__DIR__.'/../routes/web.php');
         }
 

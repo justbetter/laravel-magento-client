@@ -15,7 +15,7 @@ class ManageKeys implements ManagesKeys
         /** @var string $path */
         $path = config('magento.oauth.file.path');
 
-        $content = Storage::disk($disk)->get($path);
+        $content = Storage::disk($disk)->get($path) ?? '';
 
         return json_decode($content, true) ?? [];
     }
@@ -31,7 +31,9 @@ class ManageKeys implements ManagesKeys
         /** @var string $visibility */
         $visibility = config('magento.oauth.file.visibility');
 
-        Storage::disk($disk)->put($path, json_encode($data), $visibility);
+        if ($encoded = json_encode($data)) {
+            Storage::disk($disk)->put($path, $encoded, $visibility);
+        }
     }
 
     public function merge(array $data): void

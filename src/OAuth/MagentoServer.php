@@ -6,7 +6,9 @@ use League\OAuth1\Client\Credentials\CredentialsException;
 use League\OAuth1\Client\Credentials\TemporaryCredentials;
 use League\OAuth1\Client\Credentials\TokenCredentials;
 use League\OAuth1\Client\Server\Server;
+use League\OAuth1\Client\Server\User;
 
+/** @codeCoverageIgnore */
 class MagentoServer extends Server
 {
     public string $verifier;
@@ -16,9 +18,9 @@ class MagentoServer extends Server
         return config('magento.base_url').'/oauth/token/request';
     }
 
-    public function urlAuthorization()
+    public function urlAuthorization(): string
     {
-        //
+        return '';
     }
 
     public function urlTokenCredentials(): string
@@ -44,30 +46,36 @@ class MagentoServer extends Server
     {
         parse_str($body, $data);
 
-        if ( ! $data || ! is_array($data)) {
+        if (! $data || ! is_array($data)) {
             throw new CredentialsException('Unable to parse temporary credentials response.');
         }
 
+        /** @var string $token */
+        $token = $data['oauth_token'];
+
+        /** @var string $secret */
+        $secret = $data['oauth_token_secret'];
+
         $temporaryCredentials = new TemporaryCredentials();
-        $temporaryCredentials->setIdentifier($data['oauth_token']);
-        $temporaryCredentials->setSecret($data['oauth_token_secret']);
+        $temporaryCredentials->setIdentifier($token);
+        $temporaryCredentials->setSecret($secret);
 
         return $temporaryCredentials;
     }
 
-    public function urlUserDetails()
+    public function urlUserDetails(): string
     {
-        //
+        return '';
     }
 
-    public function userDetails($data, TokenCredentials $tokenCredentials)
+    public function userDetails($data, TokenCredentials $tokenCredentials): User
     {
-        //
+        return new User;
     }
 
-    public function userUid($data, TokenCredentials $tokenCredentials)
+    public function userUid($data, TokenCredentials $tokenCredentials): int
     {
-        //
+        return 0;
     }
 
     public function userEmail($data, TokenCredentials $tokenCredentials)
