@@ -11,10 +11,10 @@
     },
     "require-dev": {
         "laravel/pint": "^1.7",
-        "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "^10.0",
         "nunomaduro/larastan": "^2.5",
-        "phpstan/phpstan-mockery": "^1.1"
+        "orchestra/testbench": "^8.0",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpunit/phpunit": "^10.1"
     },
     "authors": [
         {
