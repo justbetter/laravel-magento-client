@@ -85,9 +85,13 @@ Identity link URL: https://example.com/magento/oauth/identity
 
 When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in a JSON file, as configured in `magento.php`. Magento will redirect you to the `identity`-endpoint in order to activate the integration.
 
+For more information about OAuth 1.0 in Magento, please consult the [documentation](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-oauth).
+
+#### Identity endpoint
+
 Note that the `identity`-endpoint **does not** have any authentication or authorization middleware by default - you should add this in the configuration yourself. If you do not have any form of protection, anyone could change the tokens in your secret file.
 
-For more information about OAuth 1.0 in Magento, please consult the [documentation](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-oauth).
+It is recommended that only administrators of your application are allowed to access the identity endpoint.
 
 ## Usage
 

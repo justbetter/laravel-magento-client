@@ -17,6 +17,7 @@ class OAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        /** @var string $method */
         $method = config('magento.authentication_method');
 
         $authMethod = AuthenticationMethod::from($method);
