@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.2.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.3.0...main)
+## [1.3.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.3.0) - 2023-05-05
+
+### What's Changed
+* Magento OAuth 1.0 implementation by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/19
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.2.0...1.3.0
+
 ## [1.2.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.2.0) - 2023-03-22
 
 ### What's Changed
