@@ -28,6 +28,7 @@ class Products
             ->json();
     }
 
+    /** @return LazyCollection<int, array> */
     public function lazy(?SearchCriteria $searchCriteria = null, int $pageSize = 100): LazyCollection
     {
         return $this->retrieveLazily('products', $pageSize, $searchCriteria);

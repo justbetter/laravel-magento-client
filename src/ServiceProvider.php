@@ -2,9 +2,13 @@
 
 namespace JustBetter\MagentoClient;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoClient\Actions\AuthenticateRequest;
 use JustBetter\MagentoClient\Actions\BuildRequest;
-use JustBetter\MagentoClient\Actions\RetrieveIntegrationToken;
+use JustBetter\MagentoClient\Actions\OAuth\ManageKeys;
+use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
+use JustBetter\MagentoClient\Http\Middleware\OAuthMiddleware;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -24,7 +28,9 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerActions(): static
     {
-        RetrieveIntegrationToken::bind();
+        ManageKeys::bind();
+        RequestAccessToken::bind();
+        AuthenticateRequest::bind();
         BuildRequest::bind();
 
         return $this;
@@ -32,7 +38,9 @@ class ServiceProvider extends BaseServiceProvider
 
     public function boot(): void
     {
-        $this->bootConfig();
+        $this
+            ->bootConfig()
+            ->bootRoutes();
     }
 
     protected function bootConfig(): static
@@ -40,6 +48,17 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishes([
             __DIR__.'/../config/magento.php' => config_path('magento.php'),
         ], 'config');
+
+        return $this;
+    }
+
+    protected function bootRoutes(): static
+    {
+        if (! $this->app->routesAreCached()) {
+            Route::prefix(config('magento.oauth.prefix'))
+                ->middleware([OAuthMiddleware::class])
+                ->group(__DIR__.'/../routes/web.php');
+        }
 
         return $this;
     }

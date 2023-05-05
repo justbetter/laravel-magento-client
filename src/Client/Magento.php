@@ -64,6 +64,7 @@ class Magento
         return $response;
     }
 
+    /** @return LazyCollection<int, array> */
     public function lazy(string $path, array $data = [], int $pageSize = 100): LazyCollection
     {
         return LazyCollection::make(function () use ($path, $data, $pageSize): Generator {
@@ -109,6 +110,16 @@ class Magento
             'access_token' => '::token::',
             'timeout' => 30,
             'connect_timeout' => 10,
+            'authentication_method' => 'token',
+            'oauth' => [
+                'middleware' => [],
+                'prefix' => 'magento/oauth',
+                'file' => [
+                    'disk' => 'local',
+                    'path' => 'secret/magento2_oauth.json',
+                    'visibility' => 'private',
+                ],
+            ],
         ]);
     }
 }

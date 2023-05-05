@@ -62,10 +62,36 @@ MAGENTO_ACCESS_TOKEN=
 
 ## Authentication
 
-This package uses an integration token, since 2.4.4 the default is an OAuth token. This is not implemented yet (feel
-free to make a PR).
-See [this page](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-token) for more
-information.
+By default, this packages uses Bearer tokens to authenticate to Magento. Since Magento 2.4.4, this method of authentication requires additional configuration in Magento as [described here](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-token).
+
+It is recommended to authenticate to Magento using OAuth 1.0 which will also prevent the additional configuration requirements, besides setting up the integration itself.
+
+### Setting up OAuth 1.0
+
+Start by adding the following variable to your `.env`-file.
+
+```.dotenv
+MAGENTO_AUTH_METHOD=oauth
+```
+
+Note that you can also remove `MAGENTO_ACCESS_TOKEN` at this point, as it will be saved in a file instead.
+
+Next, open Magento and create a new integration. When configuring, supply a `Callback URL` and `Identity link URL`. If you have not made any changes to your configuration, these are the URLs:
+
+```
+Callback URL:      https://example.com/magento/oauth/callback
+Identity link URL: https://example.com/magento/oauth/identity
+```
+
+When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in a JSON file, as configured in `magento.php`. Magento will redirect you to the `identity`-endpoint in order to activate the integration.
+
+For more information about OAuth 1.0 in Magento, please consult the [documentation](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-oauth).
+
+#### Identity endpoint
+
+Note that the `identity`-endpoint **does not** have any authentication or authorization middleware by default - you should add this in the configuration yourself. If you do not have any form of protection, anyone could change the tokens in your secret file.
+
+It is recommended that only administrators of your application are allowed to access the identity endpoint.
 
 ## Usage
 

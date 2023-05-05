@@ -23,4 +23,31 @@ return [
     /* Specify the connection timeout (in seconds) for the request. */
     'connect_timeout' => 10,
 
+    /* Authentication method, choose either "oauth" or "token". */
+    'authentication_method' => env('MAGENTO_AUTH_METHOD', 'token'),
+
+    /* OAuth configuration */
+    'oauth' => [
+
+        /* Add your middleware that authenticates users here, this is used for the identity callback. */
+        'middleware' => [
+            //
+        ],
+
+        /* Prefix for the oauth routes. */
+        'prefix' => 'magento/oauth',
+
+        /* File configuration */
+        'file' => [
+
+            /* Disk to use. */
+            'disk' => 'local',
+
+            /* File to store the credentials in. */
+            'path' => 'secret/magento2_oauth.json',
+
+            /* Visibility for the secret file */
+            'visibility' => 'private',
+        ],
+    ],
 ];
