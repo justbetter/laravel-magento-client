@@ -42,7 +42,7 @@ class Example
 > Looking to synchronize [prices](https://github.com/justbetter/laravel-magento-prices)
 > or [stock](https://github.com/justbetter/laravel-magento-stock) to Magento?
 
-## Installation and Configuration
+## Installation
 
 > Are you coming from `grayloon/laravel-magento-api`? We have written
 > a [migration guide](./docs/migrations/GRAYLOON.md)!
@@ -53,11 +53,19 @@ Require this package:
 composer require justbetter/laravel-magento-client
 ```
 
+## Configuration
+
 Add the following to your `.env`:
 
 ```.dotenv
 MAGENTO_BASE_URL=
 MAGENTO_ACCESS_TOKEN=
+```
+
+Optionally, publish the configuration file of this package.
+
+```bash
+php artisan vendor:publish --provider="JustBetter\MagentoClient\ServiceProvider" --tag=config
 ```
 
 ## Authentication
@@ -123,6 +131,7 @@ For example:
 <?php
 
 $search = \JustBetter\MagentoClient\Query\SearchCriteria::make()
+        ->select('items[sku,name]')
         ->where('sku', '!=', '123')
         ->orWhere('price', '>', 10),
         ->whereIn('sku', ['123', '456'])

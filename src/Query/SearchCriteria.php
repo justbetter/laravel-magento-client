@@ -28,9 +28,11 @@ class SearchCriteria
         return $this;
     }
 
-    public function select(array $fields): static
+    public function select(array|string $fields): static
     {
-        $this->select['fields'] = implode(',', $fields);
+        $this->select['fields'] = is_array($fields)
+            ? implode(',', $fields)
+            : $fields;
 
         return $this;
     }

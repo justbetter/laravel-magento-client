@@ -159,14 +159,25 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_a_field_selection(): void
+    public function test_it_can_add_a_field_selection_as_string(): void
     {
         $searchCriteria = SearchCriteria::make()
-            ->select(['sku', 'price'])
+            ->select('items[sku,price]')
             ->get();
 
         $this->assertEquals([
-            'fields' => 'sku,price',
+            'fields' => 'items[sku,price]',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_a_field_selection_as_array(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->select(['items[sku,price]', 'total_count'])
+            ->get();
+
+        $this->assertEquals([
+            'fields' => 'items[sku,price],total_count',
         ], $searchCriteria);
     }
 
