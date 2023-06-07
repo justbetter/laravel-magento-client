@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.3.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.4.0...main)
+## [1.4.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.4.0) - 2023-06-07
+
+### What's Changed
+* Add async methods by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/21
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.3.1...1.4.0
+
+## [1.3.1](https://github.com/justbetter/laravel-magento-client/releases/tag/1.3.1) - 2023-05-10
+
+### What's Changed
+* Allow selection as a string by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/20
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.3.0...1.3.1
+
 ## [1.3.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.3.0) - 2023-05-05
 
 ### What's Changed
