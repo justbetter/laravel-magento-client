@@ -60,6 +60,35 @@ class ClientTest extends TestCase
         });
     }
 
+    public function test_it_can_make_an_async_post_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->postAsync('products', [
+            'product' => [
+                'sku' => '::some-sku::',
+            ],
+        ]);
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('product'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'POST' &&
+                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
+                $request->body() === '{"product":{"sku":"::some-sku::"}}';
+        });
+    }
+
     public function test_it_can_make_a_put_call(): void
     {
         Http::fake([
@@ -85,6 +114,35 @@ class ClientTest extends TestCase
         Http::assertSent(function (Request $request) {
             return $request->method() === 'PUT' &&
                 $request->url() == 'http://magento.test/rest/all/V1/products' &&
+                $request->body() === '{"product":{"sku":"::some-sku::"}}';
+        });
+    }
+
+    public function test_it_can_make_an_async_put_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->putAsync('products', [
+            'product' => [
+                'sku' => '::some-sku::',
+            ],
+        ]);
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('product'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'PUT' &&
+                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -118,6 +176,35 @@ class ClientTest extends TestCase
         });
     }
 
+    public function test_it_can_make_an_async_patch_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->patchAsync('products', [
+            'product' => [
+                'sku' => '::some-sku::',
+            ],
+        ]);
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('product'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'PATCH' &&
+                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
+                $request->body() === '{"product":{"sku":"::some-sku::"}}';
+        });
+    }
+
     public function test_it_can_make_a_delete_call(): void
     {
         Http::fake([
@@ -133,6 +220,24 @@ class ClientTest extends TestCase
         Http::assertSent(function (Request $request) {
             return $request->method() === 'DELETE' &&
                 $request->url() == 'http://magento.test/rest/all/V1/products/1';
+        });
+    }
+
+    public function test_it_can_make_an_async_delete_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products/1' => Http::response([], 204),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->deleteAsync('products/1');
+        $this->assertEquals(204, $response->status());
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'DELETE' &&
+                $request->url() == 'http://magento.test/rest/all/async/V1/products/1';
         });
     }
 
