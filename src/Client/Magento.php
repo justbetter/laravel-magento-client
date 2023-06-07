@@ -40,10 +40,26 @@ class Magento
         return $response;
     }
 
+    public function postAsync(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->post($this->getUrl($path, true), $data);
+
+        return $response;
+    }
+
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
         $response = $this->request->build()->patch($this->getUrl($path), $data);
+
+        return $response;
+    }
+
+    public function patchAsync(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->patch($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -56,10 +72,26 @@ class Magento
         return $response;
     }
 
+    public function putAsync(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->put($this->getUrl($path, true), $data);
+
+        return $response;
+    }
+
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
         $response = $this->request->build()->delete($this->getUrl($path), $data);
+
+        return $response;
+    }
+
+    public function deleteAsync(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->delete($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -90,14 +122,21 @@ class Magento
         });
     }
 
-    public function getUrl(string $path): string
+    public function getUrl(string $path, bool $async = false): string
     {
-        return implode('/', [
+        $options =[
             config('magento.base_path', 'rest'),
             $this->storeCode ?? config('magento.store_code', 'all'),
-            config('magento.version', 'V1'),
-            $path,
-        ]);
+        ];
+
+        if ($async) {
+            $options[] = 'async';
+        }
+
+        $options[] = config('magento.version', 'V1');
+        $options[] = $path;
+
+        return implode('/', $options);
     }
 
     public static function fake(): void
