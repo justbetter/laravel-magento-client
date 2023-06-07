@@ -124,7 +124,7 @@ class Magento
 
     public function getUrl(string $path, bool $async = false): string
     {
-        $options =[
+        $options = [
             config('magento.base_path', 'rest'),
             $this->storeCode ?? config('magento.store_code', 'all'),
         ];

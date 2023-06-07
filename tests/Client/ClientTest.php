@@ -223,7 +223,6 @@ class ClientTest extends TestCase
         });
     }
 
-
     public function test_it_can_make_an_async_delete_call(): void
     {
         Http::fake([
