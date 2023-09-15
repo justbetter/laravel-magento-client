@@ -48,6 +48,14 @@ class Magento
         return $response;
     }
 
+    public function postBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->post($this->getUrl($path, true, true), $data);
+
+        return $response;
+    }
+
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
@@ -60,6 +68,14 @@ class Magento
     {
         /** @var Response $response */
         $response = $this->request->build()->patch($this->getUrl($path, true), $data);
+
+        return $response;
+    }
+
+    public function patchBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->patch($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -80,6 +96,14 @@ class Magento
         return $response;
     }
 
+    public function putBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->put($this->getUrl($path, true, true), $data);
+
+        return $response;
+    }
+
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
@@ -96,6 +120,14 @@ class Magento
         return $response;
     }
 
+    public function deleteABulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->delete($this->getUrl($path, true, true), $data);
+
+        return $response;
+    }
+
     /** @return LazyCollection<int, array> */
     public function lazy(string $path, array $data = [], int $pageSize = 100): LazyCollection
     {
@@ -104,7 +136,7 @@ class Magento
             $hasNextPage = true;
 
             while ($hasNextPage) {
-                $data['searchCriteria[pageSize]'] = $pageSize;
+                $data['searchCriteria[pageSize]']    = $pageSize;
                 $data['searchCriteria[currentPage]'] = $currentPage;
 
                 $response = $this->get($path, $data)->throw();
@@ -122,7 +154,7 @@ class Magento
         });
     }
 
-    public function getUrl(string $path, bool $async = false): string
+    public function getUrl(string $path, bool $async = false, $bulk = false): string
     {
         $options = [
             config('magento.base_path', 'rest'),
@@ -131,6 +163,10 @@ class Magento
 
         if ($async) {
             $options[] = 'async';
+        }
+
+        if ($async && $bulk) {
+            $options[] = 'bulk';
         }
 
         $options[] = config('magento.version', 'V1');
@@ -142,20 +178,20 @@ class Magento
     public static function fake(): void
     {
         config()->set('magento', [
-            'base_url' => 'http://magento.test',
-            'base_path' => 'rest',
-            'store_code' => 'all',
-            'version' => 'V1',
-            'access_token' => '::token::',
-            'timeout' => 30,
-            'connect_timeout' => 10,
+            'base_url'              => 'http://magento.test',
+            'base_path'             => 'rest',
+            'store_code'            => 'all',
+            'version'               => 'V1',
+            'access_token'          => '::token::',
+            'timeout'               => 30,
+            'connect_timeout'       => 10,
             'authentication_method' => 'token',
-            'oauth' => [
+            'oauth'                 => [
                 'middleware' => [],
-                'prefix' => 'magento/oauth',
-                'file' => [
-                    'disk' => 'local',
-                    'path' => 'secret/magento2_oauth.json',
+                'prefix'     => 'magento/oauth',
+                'file'       => [
+                    'disk'       => 'local',
+                    'path'       => 'secret/magento2_oauth.json',
                     'visibility' => 'private',
                 ],
             ],
