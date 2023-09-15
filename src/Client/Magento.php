@@ -120,7 +120,7 @@ class Magento
         return $response;
     }
 
-    public function deleteABulk(string $path, array $data = []): Response
+    public function deleteBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
         $response = $this->request->build()->delete($this->getUrl($path, true, true), $data);
@@ -154,20 +154,21 @@ class Magento
         });
     }
 
-    public function getUrl(string $path, bool $async = false, $bulk = false): string
+    public function getUrl(string $path, bool $async = false, bool $bulk = false): string
     {
         $options = [
             config('magento.base_path', 'rest'),
             $this->storeCode ?? config('magento.store_code', 'all'),
         ];
 
-        if ($async) {
+        if ($async || $bulk) {
             $options[] = 'async';
+
+            if ($bulk) {
+                $options[] = 'bulk';
+            }
         }
 
-        if ($async && $bulk) {
-            $options[] = 'bulk';
-        }
 
         $options[] = config('magento.version', 'V1');
         $options[] = $path;
