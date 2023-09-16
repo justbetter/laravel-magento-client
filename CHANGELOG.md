@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.4.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.5.0...main)
+## [1.5.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.5.0) - 2023-09-16
+
+### What's Changed
+* Upgrade Magento Class to accept bulk option by @lucassmacedo in https://github.com/justbetter/laravel-magento-client/pull/27
+
+### New Contributors
+* @lucassmacedo made their first contribution in https://github.com/justbetter/laravel-magento-client/pull/27
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.4.0...1.5.0
+
 ## [1.4.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.4.0) - 2023-06-07
 
 ### What's Changed
