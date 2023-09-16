@@ -17,7 +17,7 @@ class Magento
     ) {
     }
 
-    public function store(?string $store = null): static
+    public function store(string $store = null): static
     {
         $this->storeCode = $store;
 
@@ -136,7 +136,7 @@ class Magento
             $hasNextPage = true;
 
             while ($hasNextPage) {
-                $data['searchCriteria[pageSize]']    = $pageSize;
+                $data['searchCriteria[pageSize]'] = $pageSize;
                 $data['searchCriteria[currentPage]'] = $currentPage;
 
                 $response = $this->get($path, $data)->throw();
@@ -169,7 +169,6 @@ class Magento
             }
         }
 
-
         $options[] = config('magento.version', 'V1');
         $options[] = $path;
 
@@ -179,20 +178,20 @@ class Magento
     public static function fake(): void
     {
         config()->set('magento', [
-            'base_url'              => 'http://magento.test',
-            'base_path'             => 'rest',
-            'store_code'            => 'all',
-            'version'               => 'V1',
-            'access_token'          => '::token::',
-            'timeout'               => 30,
-            'connect_timeout'       => 10,
+            'base_url' => 'http://magento.test',
+            'base_path' => 'rest',
+            'store_code' => 'all',
+            'version' => 'V1',
+            'access_token' => '::token::',
+            'timeout' => 30,
+            'connect_timeout' => 10,
             'authentication_method' => 'token',
-            'oauth'                 => [
+            'oauth' => [
                 'middleware' => [],
-                'prefix'     => 'magento/oauth',
-                'file'       => [
-                    'disk'       => 'local',
-                    'path'       => 'secret/magento2_oauth.json',
+                'prefix' => 'magento/oauth',
+                'file' => [
+                    'disk' => 'local',
+                    'path' => 'secret/magento2_oauth.json',
                     'visibility' => 'private',
                 ],
             ],
