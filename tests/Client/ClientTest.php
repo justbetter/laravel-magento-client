@@ -4,6 +4,7 @@ namespace JustBetter\MagentoClient\Tests\Client;
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Tests\TestCase;
 
@@ -89,6 +90,53 @@ class ClientTest extends TestCase
         });
     }
 
+    public function test_it_can_make_a_bulk_post_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+                'bulk_uuid' => Str::uuid()->toString(),
+                'request_items' => [
+                    [
+                        'id' => 0,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                    [
+                        'id' => 1,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                ],
+                'errors' => false,
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->postBulk('products', [
+            [
+                'product' => [
+                    'sku' => '::sku-1::',
+                ],
+            ],
+            [
+                'product' => [
+                    'sku' => '::sku-2::',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('request_items'));
+
+        Http::assertSent(function (Request $request): bool {
+            return $request->method() === 'POST' &&
+                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
+        });
+    }
+
     public function test_it_can_make_a_put_call(): void
     {
         Http::fake([
@@ -144,6 +192,53 @@ class ClientTest extends TestCase
             return $request->method() === 'PUT' &&
                 $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
+        });
+    }
+
+    public function test_it_can_make_a_bulk_put_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+                'bulk_uuid' => Str::uuid()->toString(),
+                'request_items' => [
+                    [
+                        'id' => 0,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                    [
+                        'id' => 1,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                ],
+                'errors' => false,
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->putBulk('products', [
+            [
+                'product' => [
+                    'sku' => '::sku-1::',
+                ],
+            ],
+            [
+                'product' => [
+                    'sku' => '::sku-2::',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('request_items'));
+
+        Http::assertSent(function (Request $request): bool {
+            return $request->method() === 'PUT' &&
+                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
         });
     }
 
@@ -205,6 +300,53 @@ class ClientTest extends TestCase
         });
     }
 
+    public function test_it_can_make_a_bulk_patch_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+                'bulk_uuid' => Str::uuid()->toString(),
+                'request_items' => [
+                    [
+                        'id' => 0,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                    [
+                        'id' => 1,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                ],
+                'errors' => false,
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->patchBulk('products', [
+            [
+                'product' => [
+                    'sku' => '::sku-1::',
+                ],
+            ],
+            [
+                'product' => [
+                    'sku' => '::sku-2::',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('request_items'));
+
+        Http::assertSent(function (Request $request): bool {
+            return $request->method() === 'PATCH' &&
+                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
+        });
+    }
+
     public function test_it_can_make_a_delete_call(): void
     {
         Http::fake([
@@ -238,6 +380,49 @@ class ClientTest extends TestCase
         Http::assertSent(function (Request $request) {
             return $request->method() === 'DELETE' &&
                 $request->url() == 'http://magento.test/rest/all/async/V1/products/1';
+        });
+    }
+
+    public function test_it_can_make_a_bulk_delete_call(): void
+    {
+        Http::fake([
+            'http://magento.test/rest/all/async/bulk/V1/products/bySku' => Http::response([
+                'bulk_uuid' => Str::uuid()->toString(),
+                'request_items' => [
+                    [
+                        'id' => 0,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                    [
+                        'id' => 1,
+                        'data_hash' => '0000000000000000000000000000000000000000000000000000000000000000',
+                        'status' => 'accepted',
+                    ],
+                ],
+                'errors' => false,
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->deleteBulk('products/bySku', [
+            [
+                'sku' => '::sku-1::',
+            ],
+            [
+                'sku' => '::sku-2::',
+            ],
+        ]);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('request_items'));
+
+        Http::assertSent(function (Request $request): bool {
+            return $request->method() === 'DELETE' &&
+                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products/bySku' &&
+                $request->body() === '[{"sku":"::sku-1::"},{"sku":"::sku-2::"}]';
         });
     }
 

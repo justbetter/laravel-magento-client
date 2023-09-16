@@ -17,7 +17,7 @@ class Magento
     ) {
     }
 
-    public function store(?string $store = null): static
+    public function store(string $store = null): static
     {
         $this->storeCode = $store;
 
@@ -48,6 +48,14 @@ class Magento
         return $response;
     }
 
+    public function postBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->post($this->getUrl($path, true, true), $data);
+
+        return $response;
+    }
+
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
@@ -60,6 +68,14 @@ class Magento
     {
         /** @var Response $response */
         $response = $this->request->build()->patch($this->getUrl($path, true), $data);
+
+        return $response;
+    }
+
+    public function patchBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->patch($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -80,6 +96,14 @@ class Magento
         return $response;
     }
 
+    public function putBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->put($this->getUrl($path, true, true), $data);
+
+        return $response;
+    }
+
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
@@ -92,6 +116,14 @@ class Magento
     {
         /** @var Response $response */
         $response = $this->request->build()->delete($this->getUrl($path, true), $data);
+
+        return $response;
+    }
+
+    public function deleteBulk(string $path, array $data = []): Response
+    {
+        /** @var Response $response */
+        $response = $this->request->build()->delete($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -122,15 +154,19 @@ class Magento
         });
     }
 
-    public function getUrl(string $path, bool $async = false): string
+    public function getUrl(string $path, bool $async = false, bool $bulk = false): string
     {
         $options = [
             config('magento.base_path', 'rest'),
             $this->storeCode ?? config('magento.store_code', 'all'),
         ];
 
-        if ($async) {
+        if ($async || $bulk) {
             $options[] = 'async';
+
+            if ($bulk) {
+                $options[] = 'bulk';
+            }
         }
 
         $options[] = config('magento.version', 'V1');
