@@ -1,37 +1,44 @@
 name: style
 
-on: ['push', 'pull_request']
-
+on:
+    push:
+        branches:
+            - main
 jobs:
     test:
         runs-on: ${{ matrix.os }}
         strategy:
             fail-fast: true
             matrix:
-                os: [ubuntu-latest]
-                php: [8.1]
-                laravel: [10.*]
-                stability: [prefer-stable]
+                os: [ ubuntu-latest ]
+                php: [ 8.2 ]
+                laravel: [ 10.* ]
+                stability: [ prefer-stable ]
                 include:
-                    - laravel: 10.*
-                      testbench: 8.*
+                    -   laravel: 10.*
+                        testbench: 8.*
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+            -   name: Checkout code
+                uses: actions/checkout@v2
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-                  coverage: none
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
 
-            - name: Install dependencies
-              run: |
-                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-            - name: Style
-              run: composer style
+            -   name: Install dependencies
+                run: |
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+            -   name: Style
+                run: composer fix-style
+
+            -   name: Commit Changes
+                uses: stefanzweifel/git-auto-commit-action@v4
+                with:
+                    commit_message: Fix styling changes
