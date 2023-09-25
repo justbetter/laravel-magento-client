@@ -28,38 +28,38 @@
       "role": "Developer"
     }
   ],
-  "autoload": {
-    "psr-4": {
-      "JustBetter\\MagentoClient\\": "src",
-        "JustBetter\\MagentoClient\\Database\\Factories\\": "database/factories"
-      }
-  },
-  "autoload-dev": {
-    "psr-4": {
-        "JustBetter\\MagentoClient\\Tests\\": "tests"
-    }
-  },
-  "scripts": {
-    "test": "phpunit",
-      "analyse": "phpstan",
-      "style": "pint --test",
-      "quality": [
-        "@test",
-        "@analyse",
-        "@style"
-    ],
-    "fix-style": "pint"
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "JustBetter\\MagentoClient\\ServiceProvider"
-      ]
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "autoload": {
+        "psr-4": {
+            "JustBetter\\MagentoClient\\": "src",
+            "JustBetter\\MagentoClient\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JustBetter\\MagentoClient\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan",
+        "style": "pint --test",
+        "quality": [
+            "@test",
+            "@analyse",
+            "@style"
+        ],
+        "fix-style": "pint"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JustBetter\\MagentoClient\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
