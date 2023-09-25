@@ -1,64 +1,65 @@
 {
-    "name": "justbetter/laravel-magento-client",
-    "description": "A client to interact with Magento",
-    "type": "package",
-    "license": "MIT",
-    "require": {
-        "php": "^8.1",
-        "guzzlehttp/guzzle": "^7.5",
-        "laravel/framework": "^10.0",
-        "league/oauth1-client": "^1.10"
+  "name": "justbetter/laravel-magento-client",
+  "description": "A client to interact with Magento",
+  "type": "package",
+  "license": "MIT",
+  "require": {
+    "php": "^8.1",
+    "guzzlehttp/guzzle": "^7.5",
+    "laravel/framework": "^10.0",
+    "league/oauth1-client": "^1.10"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.7",
+    "nunomaduro/larastan": "^2.5",
+    "orchestra/testbench": "^8.0",
+    "phpstan/phpstan-mockery": "^1.1",
+    "phpunit/phpunit": "^10.1"
+  },
+  "authors": [
+    {
+      "name": "Vincent Boon",
+      "email": "vincent@justbetter.nl",
+      "role": "Developer"
     },
-    "require-dev": {
-        "laravel/pint": "^1.7",
-        "nunomaduro/larastan": "^2.5",
-        "orchestra/testbench": "^8.0",
-        "phpstan/phpstan-mockery": "^1.1",
-        "phpunit/phpunit": "^10.1"
-    },
-    "authors": [
-        {
-            "name": "Vincent Boon",
-            "email": "vincent@justbetter.nl",
-            "role": "Developer"
-        },
-        {
-            "name": "Ramon Rietdijk",
-            "email": "ramon@justbetter.nl",
-            "role": "Developer"
-        }
+    {
+      "name": "Ramon Rietdijk",
+      "email": "ramon@justbetter.nl",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "JustBetter\\MagentoClient\\": "src",
+        "JustBetter\\MagentoClient\\Database\\Factories\\": "database/factories"
+      }
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "JustBetter\\MagentoClient\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+      "analyse": "phpstan",
+      "style": "pint --test",
+      "quality": [
+        "@test",
+        "@analyse",
+        "@style"
     ],
-    "autoload": {
-        "psr-4": {
-            "JustBetter\\MagentoClient\\": "src",
-            "JustBetter\\MagentoClient\\Database\\Factories\\": "database/factories"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "JustBetter\\MagentoClient\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "phpunit",
-        "analyse": "phpstan",
-        "style": "pint --test",
-        "quality": [
-            "@test",
-            "@analyse",
-            "@style"
-        ]
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "JustBetter\\MagentoClient\\ServiceProvider"
-            ]
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "fix-style": "pint"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "JustBetter\\MagentoClient\\ServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
