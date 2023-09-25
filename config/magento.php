@@ -49,5 +49,10 @@ return [
             /* Visibility for the secret file */
             'visibility' => 'private',
         ],
+
+        'keys' => [
+            'manager' => \JustBetter\MagentoClient\Actions\OAuth\ManageKeysFromDisk::class,
+            'owner' => \App\Models\User::class,
+        ],
     ],
 ];

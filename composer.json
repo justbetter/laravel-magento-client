@@ -30,7 +30,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "JustBetter\\MagentoClient\\": "src"
+            "JustBetter\\MagentoClient\\": "src",
+            "JustBetter\\MagentoClient\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {

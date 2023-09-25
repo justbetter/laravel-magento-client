@@ -5,7 +5,7 @@ namespace JustBetter\MagentoClient\Actions\OAuth;
 use Illuminate\Support\Facades\Storage;
 use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 
-class ManageKeys implements ManagesKeys
+class ManageKeysFromDisk implements ManagesKeys
 {
     public function get(): array
     {

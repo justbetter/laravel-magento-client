@@ -3,10 +3,10 @@
 namespace JustBetter\MagentoClient\Tests\Client;
 
 use Illuminate\Support\Facades\Storage;
-use JustBetter\MagentoClient\Actions\OAuth\ManageKeys;
+use JustBetter\MagentoClient\Actions\OAuth\ManageKeysFromDisk;
 use JustBetter\MagentoClient\Tests\TestCase;
 
-class ManageKeysTest extends TestCase
+class ManageKeysFromDiskTest extends TestCase
 {
     /** @test */
     public function it_can_get_data(): void
@@ -23,7 +23,7 @@ class ManageKeysTest extends TestCase
         Storage::disk('local')->put('secret/magento2_oauth.json', $encoded);
 
         /** @var ManageKeys $action */
-        $action = app(ManageKeys::class);
+        $action = app(ManageKeysFromDisk::class);
 
         $data = $action->get();
 
@@ -40,7 +40,7 @@ class ManageKeysTest extends TestCase
         ];
 
         /** @var ManageKeys $action */
-        $action = app(ManageKeys::class);
+        $action = app(ManageKeysFromDisk::class);
         $action->set($content);
 
         $data = $action->get();
@@ -67,7 +67,7 @@ class ManageKeysTest extends TestCase
         ];
 
         /** @var ManageKeys $action */
-        $action = app(ManageKeys::class);
+        $action = app(ManageKeysFromDisk::class);
         $action->merge($new);
 
         $data = $action->get();
