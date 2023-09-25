@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User;
 use JustBetter\MagentoClient\Database\Factories\MagentoOAuthFactory;
 
 class MagentoOAuth extends Model
@@ -31,6 +30,7 @@ class MagentoOAuth extends Model
         if ($keys = self::whereOauthConsumerKey($oauth_consumer_key)->first()) {
             $keys->owner()->associate($model);
             $keys->save();
+
             return true;
         }
 

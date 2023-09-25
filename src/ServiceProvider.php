@@ -42,7 +42,7 @@ class ServiceProvider extends BaseServiceProvider
             ->bootConfig()
             ->bootRoutes();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     protected function bootConfig(): static

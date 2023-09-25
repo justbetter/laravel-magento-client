@@ -22,17 +22,18 @@ abstract class TestCase extends BaseTestCase
 
     public function setUp(): void
     {
-        parent::setUp();    $this->artisan('migrate',
-        ['--database' => 'testbench'])->run();
+        parent::setUp();
+        $this->artisan('migrate',
+            ['--database' => 'testbench'])->run();
     }
 
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 }
