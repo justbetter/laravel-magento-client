@@ -25,7 +25,7 @@ class BuildRequest implements BuildsRequest
             ->acceptJson()
             ->asJson();
 
-        return $this->request->authenticate($connection, $pendingRequest);
+        return $this->request->authenticate($pendingRequest, $connection);
     }
 
     public static function bind(): void

@@ -35,6 +35,12 @@ class Example
             $retrievedOrders[] = $order['increment_id'];
         }
     }
+
+    public function multipleConnections()
+    {
+        $this->magento->connection('connection_one')->get('products/1');
+        $this->magento->connection('connection_two')->get('products/1');
+    }
 }
 
 ```
@@ -68,6 +74,31 @@ Optionally, publish the configuration file of this package.
 php artisan vendor:publish --provider="JustBetter\MagentoClient\ServiceProvider" --tag=config
 ```
 
+## Multiple connections
+
+This package supports connecting to multiple Magento instances.
+In the configuration file you will find an array with the connections where you can configure each conn ection.
+
+```php
+    'connection' => 'default',
+    'connections' => [
+        'default' => [
+            /* Base URL of Magento, for example: https://magento.test */
+            'base_url' => env('MAGENTO_BASE_URL'),
+
+           // Other settings
+        ],
+        'another_connection' => [
+            'base_url' => env('ANOTHER_MAGENTO_BASE_URL'),
+
+            // Other settings
+        ],
+    ],
+```
+
+The `connection` setting sets which connection is used by default.
+You can switch connections by using the `connection` method on the client.
+
 ## Authentication
 
 By default, this packages uses Bearer tokens to authenticate to Magento. Since Magento 2.4.4, this method of authentication requires additional configuration in Magento as [described here](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-token).
@@ -87,15 +118,21 @@ Note that you can also remove `MAGENTO_ACCESS_TOKEN` at this point, as it will b
 Next, open Magento and create a new integration. When configuring, supply a `Callback URL` and `Identity link URL`. If you have not made any changes to your configuration, these are the URLs:
 
 ```
-Callback URL:      https://example.com/magento/oauth/callback
-Identity link URL: https://example.com/magento/oauth/identity
+Callback URL:      https://example.com/magento/oauth/callback/{connection}
+Identity link URL: https://example.com/magento/oauth/identity/{connection}
 ```
 
-When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in a JSON file, as configured in `magento.php`. Magento will redirect you to the `identity`-endpoint in order to activate the integration.
+`connection` is the key in your connections array in the configuration file.
+
+When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in the database, as configured in `magento.php`. You may adjust to save the keys on in a JSON file or create your own implementation.
+Magento will redirect you to the `identity`-endpoint in order to activate the integration.
 
 For more information about OAuth 1.0 in Magento, please consult the [documentation](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-oauth).
 
 #### Identity endpoint
+
+> [!CAUTION]
+> Be sure to add your authentication middleware
 
 Note that the `identity`-endpoint **does not** have any authentication or authorization middleware by default - you should add this in the configuration yourself. If you do not have any form of protection, anyone could change the tokens in your secret file.
 
@@ -142,11 +179,17 @@ $search = \JustBetter\MagentoClient\Query\SearchCriteria::make()
 
 You can view more examples in [Magento's documentation](https://developer.adobe.com/commerce/webapi/rest/use-rest/performing-searches/).
 
-### Pre defined requests (deprecated)
+### Connections
 
-> Requests are deprecated as the `lazy` functionality has been made available in the client itself.
+You can connect to other connections using the `connection` method on the client.
 
-This package comes bundled with a few predefined request so that you do not have to reinvent the wheel.
+```php
+/** @var \JustBetter\MagentoClient\Client\Magento $client */
+$client = app(\JustBetter\MagentoClient\Client\Magento::class);
+
+$client->connection('connection_one')->get('products');
+$client->connection('connection_two')->get('products');
+```
 
 ### More Examples
 

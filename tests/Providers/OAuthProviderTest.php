@@ -33,7 +33,7 @@ class OAuthProviderTest extends TestCase
 
         /** @var OAuthProvider $provider */
         $provider = app(OAuthProvider::class);
-        $provider->authenticate('default', $pendingRequest);
+        $provider->authenticate($pendingRequest, 'default');
 
         $authorization = null;
 

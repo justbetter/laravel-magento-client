@@ -34,9 +34,12 @@ class RequestAccessToken implements RequestsAccessToken
 
         /** @var MagentoServer $server */
         $server = app()->makeWith(MagentoServer::class, [
+            'connection' => $connection,
             'clientCredentials' => $credentials,
             'signature' => new HmacSha256Signature($credentials),
         ]);
+
+        $server->connection = $connection;
 
         $temporaryCredentials = $server->getTemporaryCredentials();
 

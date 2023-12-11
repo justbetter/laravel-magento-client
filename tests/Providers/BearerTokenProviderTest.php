@@ -17,7 +17,7 @@ class BearerTokenProviderTest extends TestCase
 
         /** @var BearerTokenProvider $provider */
         $provider = app(BearerTokenProvider::class);
-        $provider->authenticate('default', $pendingRequest);
+        $provider->authenticate($pendingRequest, 'default');
 
         $options = $pendingRequest->getOptions();
 

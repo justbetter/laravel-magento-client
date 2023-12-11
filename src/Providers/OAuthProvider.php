@@ -15,7 +15,7 @@ use Psr\Http\Message\RequestInterface;
 
 class OAuthProvider extends BaseProvider
 {
-    public function authenticate(string $connection, PendingRequest $request): PendingRequest
+    public function authenticate(PendingRequest $request, string $connection): PendingRequest
     {
         $keyStore = KeyStore::instance();
 

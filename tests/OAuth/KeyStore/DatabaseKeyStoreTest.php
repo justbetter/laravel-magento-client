@@ -3,11 +3,12 @@
 namespace JustBetter\MagentoClient\Tests\OAuth\KeyStore;
 
 use Illuminate\Support\Facades\Storage;
-use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
+use JustBetter\MagentoClient\Models\OauthKey;
+use JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore;
 use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
 
-class FileKeyStoreTest extends TestCase
+class DatabaseKeyStoreTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -15,7 +16,7 @@ class FileKeyStoreTest extends TestCase
 
         Storage::fake();
 
-        config()->set('magento.oauth.keystore', FileKeyStore::class);
+        config()->set('magento.oauth.keystore', DatabaseKeyStore::class);
     }
 
     /** @test */
@@ -25,13 +26,12 @@ class FileKeyStoreTest extends TestCase
             'key' => 'value',
         ];
 
-        /** @var FileKeyStore $store */
         $store = KeyStore::instance();
 
-        /** @var string $encoded */
-        $encoded = json_encode($content);
-
-        Storage::disk($store->disk)->put($store->path.'/default.json', $encoded);
+        OauthKey::query()->create([
+            'magento_connection' => 'default',
+            'keys' => $content,
+        ]);
 
         $data = $store->get('default');
 
@@ -45,7 +45,6 @@ class FileKeyStoreTest extends TestCase
             'key' => 'value',
         ];
 
-        /** @var FileKeyStore $store */
         $store = KeyStore::instance();
         $store->set('default', $content);
 
@@ -61,13 +60,12 @@ class FileKeyStoreTest extends TestCase
             'key' => 'value',
         ];
 
-        /** @var string $encoded */
-        $encoded = json_encode($content);
+        OauthKey::query()->create([
+            'magento_connection' => 'default',
+            'keys' => $content,
+        ]);
 
-        /** @var FileKeyStore $store */
         $store = KeyStore::instance();
-
-        Storage::disk($store->disk)->put($store->path.'/default.json', $encoded);
 
         $new = [
             'something' => 'else',

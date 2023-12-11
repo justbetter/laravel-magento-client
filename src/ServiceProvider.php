@@ -38,7 +38,8 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this
             ->bootConfig()
-            ->bootRoutes();
+            ->bootRoutes()
+            ->bootMigrations();
     }
 
     protected function bootConfig(): static
@@ -57,6 +58,13 @@ class ServiceProvider extends BaseServiceProvider
                 ->middleware([OAuthMiddleware::class])
                 ->group(__DIR__.'/../routes/web.php');
         }
+
+        return $this;
+    }
+
+    protected function bootMigrations(): static
+    {
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         return $this;
     }
