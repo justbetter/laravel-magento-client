@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoClient\Actions\AuthenticateRequest;
 use JustBetter\MagentoClient\Actions\BuildRequest;
-use JustBetter\MagentoClient\Actions\OAuth\ManageKeys;
 use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
 use JustBetter\MagentoClient\Http\Middleware\OAuthMiddleware;
 
@@ -28,7 +27,6 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerActions(): static
     {
-        ManageKeys::bind();
         RequestAccessToken::bind();
         AuthenticateRequest::bind();
         BuildRequest::bind();

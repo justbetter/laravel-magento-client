@@ -14,7 +14,7 @@ use JustBetter\MagentoClient\Query\SearchCriteria;
 trait LazilyRetrievesPages
 {
     /** @return LazyCollection<int, array> */
-    public function retrieveLazily(string $endpoint, int $pageSize, SearchCriteria $searchCriteria = null): LazyCollection
+    public function retrieveLazily(string $endpoint, int $pageSize, ?SearchCriteria $searchCriteria = null): LazyCollection
     {
         /** @phpstan-ignore-next-line */
         return LazyCollection::make(function () use ($endpoint, $pageSize, $searchCriteria) {

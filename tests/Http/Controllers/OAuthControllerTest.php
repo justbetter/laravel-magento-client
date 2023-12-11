@@ -2,8 +2,8 @@
 
 namespace JustBetter\MagentoClient\Tests\Http\Controllers;
 
-use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
+use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -18,16 +18,16 @@ class OAuthControllerTest extends TestCase
             'oauth_verifier' => '::oauth_verifier::',
         ];
 
-        $this->mock(ManagesKeys::class, function (MockInterface $mock) use ($payload): void {
+        $this->mock(FileKeyStore::class, function (MockInterface $mock) use ($payload): void {
             $mock
                 ->shouldReceive('merge')
-                ->with(['callback' => $payload])
+                ->with('default', ['callback' => $payload])
                 ->once();
         });
 
         $this
             ->withoutMiddleware()
-            ->post(route('magento.oauth.callback'), $payload, [
+            ->post(route('magento.oauth.callback', ['connection' => 'default']), $payload, [
                 'Accept' => 'application/json',
             ])
             ->assertSuccessful();
@@ -38,7 +38,7 @@ class OAuthControllerTest extends TestCase
     {
         $this
             ->withoutMiddleware()
-            ->post(route('magento.oauth.callback'), [], [
+            ->post(route('magento.oauth.callback', ['connection' => 'default']), [], [
                 'Accept' => 'application/json',
             ])
             ->assertStatus(422);
@@ -47,7 +47,7 @@ class OAuthControllerTest extends TestCase
     /** @test */
     public function it_can_block_the_callback_endpoint_without_oauth_authentication(): void
     {
-        $this->post(route('magento.oauth.callback'), [], [
+        $this->post(route('magento.oauth.callback', ['connection' => 'default']), [], [
             'Accept' => 'application/json',
         ])->assertStatus(403);
     }
@@ -58,11 +58,12 @@ class OAuthControllerTest extends TestCase
         $this->mock(RequestsAccessToken::class, function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('request')
-                ->with('::oauth_consumer_key::')
+                ->with('default', '::oauth_consumer_key::')
                 ->once();
         });
 
         $route = route('magento.oauth.identity', [
+            'connection' => 'default',
             'oauth_consumer_key' => '::oauth_consumer_key::',
             'success_call_back' => '::success_call_back::',
         ]);
@@ -77,7 +78,7 @@ class OAuthControllerTest extends TestCase
     {
         $this
             ->withoutMiddleware()
-            ->get(route('magento.oauth.identity'), [
+            ->get(route('magento.oauth.identity', ['connection' => 'default']), [
                 'Accept' => 'application/json',
             ])
             ->assertStatus(422);
@@ -86,7 +87,7 @@ class OAuthControllerTest extends TestCase
     /** @test */
     public function it_can_block_the_identity_endpoint_without_oauth_authentication(): void
     {
-        $this->get(route('magento.oauth.identity'), [
+        $this->get(route('magento.oauth.identity', ['connection' => 'default']), [
             'Accept' => 'application/json',
         ])->assertStatus(403);
     }

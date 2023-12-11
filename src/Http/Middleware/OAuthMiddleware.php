@@ -8,7 +8,7 @@ use JustBetter\MagentoClient\Enums\AuthenticationMethod;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * This middleware will prevent any OAuth routes from being accessable when the authentication method is not set to "oauth"
+ * This middleware will prevent any OAuth routes from being accessible when OAuth is not active on any of the connections
  */
 class OAuthMiddleware
 {
@@ -17,15 +17,19 @@ class OAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var string $method */
-        $method = config('magento.authentication_method');
+        /** @var array $connections */
+        $connections = config('magento.connections');
 
-        $authMethod = AuthenticationMethod::from($method);
+        foreach ($connections as $connection) {
 
-        if ($authMethod !== AuthenticationMethod::OAuth) {
-            abort(403);
+            /** @var string $method */
+            $method = $connection['authentication_method'];
+            if (AuthenticationMethod::from($method) === AuthenticationMethod::OAuth) {
+                return $next($request);
+            }
+
         }
 
-        return $next($request);
+        abort(403);
     }
 }

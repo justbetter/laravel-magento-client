@@ -41,7 +41,7 @@ class SearchCriteria
         string $field,
         string $operator,
         mixed $value = null,
-        int $filterGroup = null,
+        ?int $filterGroup = null,
         int $filterIndex = 0
     ): static {
         // Assume the operator is equals
@@ -144,7 +144,7 @@ class SearchCriteria
         string $field,
         string $operator,
         mixed $value = null,
-        int $filterGroup = null,
+        ?int $filterGroup = null,
         int $filterIndex = 0
     ): static {
         $currentFilterGroup = $filterGroup ?? $this->currentFilterGroup;

@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoClient\Tests\Client;
 
 use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
-use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
+use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
 use JustBetter\MagentoClient\Tests\TestCase;
 use League\OAuth1\Client\Credentials\TemporaryCredentials;
@@ -25,21 +25,22 @@ class RequestAccessTokenTest extends TestCase
         $tokenCredentials->setSecret('::access-token-secret::');
 
         /** @var MagentoServer $server */
-        $server = $this->mock(MagentoServer::class, function (MockInterface $mock) use ($temporaryCredentials, $tokenCredentials): void {
-            $mock
-                ->shouldReceive('getTemporaryCredentials')
-                ->once()
-                ->andReturn($temporaryCredentials);
+        $server = $this->mock(MagentoServer::class,
+            function (MockInterface $mock) use ($temporaryCredentials, $tokenCredentials): void {
+                $mock
+                    ->shouldReceive('getTemporaryCredentials')
+                    ->once()
+                    ->andReturn($temporaryCredentials);
 
-            $mock
-                ->shouldReceive('getTokenCredentials')
-                ->once()
-                ->andReturn($tokenCredentials);
-        });
+                $mock
+                    ->shouldReceive('getTokenCredentials')
+                    ->once()
+                    ->andReturn($tokenCredentials);
+            });
 
         app()->bind(MagentoServer::class, fn () => $server);
 
-        $this->mock(ManagesKeys::class, function (MockInterface $mock): void {
+        $this->mock(FileKeyStore::class, function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('get')
                 ->once()
@@ -54,7 +55,7 @@ class RequestAccessTokenTest extends TestCase
             $mock
                 ->shouldReceive('set')
                 ->once()
-                ->with([
+                ->with('default', [
                     'oauth_consumer_key' => '::oauth-consumer-key::',
                     'oauth_consumer_secret' => '::oauth-consumer-secret::',
                     'oauth_verifier' => '::oauth-verifier::',
@@ -67,7 +68,7 @@ class RequestAccessTokenTest extends TestCase
 
         /** @var RequestAccessToken $action */
         $action = app(RequestAccessToken::class);
-        $action->request($key);
+        $action->request('default', $key);
     }
 
     /** @test */
@@ -75,7 +76,7 @@ class RequestAccessTokenTest extends TestCase
     {
         $this->expectException(HttpException::class);
 
-        $this->mock(ManagesKeys::class, function (MockInterface $mock): void {
+        $this->mock(FileKeyStore::class, function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('get')
                 ->once()
@@ -92,6 +93,6 @@ class RequestAccessTokenTest extends TestCase
 
         /** @var RequestAccessToken $action */
         $action = app(RequestAccessToken::class);
-        $action->request($key);
+        $action->request('default', $key);
     }
 }

@@ -12,7 +12,7 @@ class ProductsTest extends TestCase
     public function test_it_can_retrieve_a_page(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products*' => Http::response([
+            'magento/rest/all/V1/products*' => Http::response([
                 'items' => [['sku' => '::some_sku::']],
                 'total_count' => 1,
             ]),
@@ -26,14 +26,14 @@ class ProductsTest extends TestCase
         $this->assertEquals('::some_sku::', $retrievedProducts['items'][0]['sku']);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() === 'http://magento.test/rest/all/V1/products?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=0';
+            return $request->url() === 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=0';
         });
     }
 
     public function test_it_can_lazily_retrieve_products(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products*' => Http::sequence([
+            'magento/rest/all/V1/products*' => Http::sequence([
                 Http::response([
                     'items' => [['sku' => '::sku_1::']],
                 ]),

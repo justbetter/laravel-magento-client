@@ -7,5 +7,5 @@ use Illuminate\Http\Client\PendingRequest;
 interface BuildsRequest
 {
     /** Build a basic pending request to Magento */
-    public function build(): PendingRequest;
+    public function build(string $connection): PendingRequest;
 }

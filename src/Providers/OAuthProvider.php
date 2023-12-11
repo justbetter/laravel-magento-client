@@ -6,8 +6,8 @@ use GuzzleHttp\Middleware;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 use JustBetter\MagentoClient\OAuth\HmacSha256Signature;
+use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
 use League\OAuth1\Client\Credentials\ClientCredentials;
 use League\OAuth1\Client\Credentials\TokenCredentials;
@@ -15,14 +15,11 @@ use Psr\Http\Message\RequestInterface;
 
 class OAuthProvider extends BaseProvider
 {
-    public function __construct(
-        protected ManagesKeys $keys,
-    ) {
-    }
-
-    public function authenticate(PendingRequest $request): PendingRequest
+    public function authenticate(string $connection, PendingRequest $request): PendingRequest
     {
-        $keys = $this->keys->get();
+        $keyStore = KeyStore::instance();
+
+        $keys = $keyStore->get($connection);
 
         Validator::validate($keys, [
             'oauth_consumer_key' => 'required|string',

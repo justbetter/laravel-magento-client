@@ -3,22 +3,17 @@
 namespace JustBetter\MagentoClient\Actions\OAuth;
 
 use Illuminate\Support\Facades\Validator;
-use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
 use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
 use JustBetter\MagentoClient\OAuth\HmacSha256Signature;
+use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
 use League\OAuth1\Client\Credentials\ClientCredentials;
 
 class RequestAccessToken implements RequestsAccessToken
 {
-    public function __construct(
-        protected ManagesKeys $keys
-    ) {
-    }
-
-    public function request(string $key): void
+    public function request(string $connection, string $key): void
     {
-        $keys = $this->keys->get();
+        $keys = KeyStore::instance()->get($connection);
 
         $callback = $keys['callback'] ?? [];
 
@@ -35,7 +30,7 @@ class RequestAccessToken implements RequestsAccessToken
         $credentials = new ClientCredentials();
         $credentials->setIdentifier($callback['oauth_consumer_key']);
         $credentials->setSecret($callback['oauth_consumer_secret']);
-        $credentials->setCallbackUri(route('magento.oauth.callback'));
+        $credentials->setCallbackUri(route('magento.oauth.callback', ['connection' => $connection]));
 
         /** @var MagentoServer $server */
         $server = app()->makeWith(MagentoServer::class, [
@@ -54,7 +49,8 @@ class RequestAccessToken implements RequestsAccessToken
         $auth['access_token'] = $tokenCredentials->getIdentifier();
         $auth['access_token_secret'] = $tokenCredentials->getSecret();
 
-        $this->keys->set(
+        KeyStore::instance()->set(
+            $connection,
             array_merge($callback, $auth),
         );
     }

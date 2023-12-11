@@ -11,13 +11,13 @@ class BearerTokenProviderTest extends TestCase
     /** @test */
     public function it_can_authenticate_requests(): void
     {
-        config('magento.token', '::token::');
+        config('magento.connections.default.token', '::token::');
 
         $pendingRequest = Http::baseUrl('localhost');
 
         /** @var BearerTokenProvider $provider */
         $provider = app(BearerTokenProvider::class);
-        $provider->authenticate($pendingRequest);
+        $provider->authenticate('default', $pendingRequest);
 
         $options = $pendingRequest->getOptions();
 

@@ -13,7 +13,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_get_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products*' => Http::response(['items' => []]),
+            'magento/rest/all/V1/products*' => Http::response(['items' => []]),
         ]);
 
         /** @var Magento $magento */
@@ -28,14 +28,14 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'GET' &&
-                $request->url() == 'http://magento.test/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0';
+                $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0';
         });
     }
 
     public function test_it_can_make_a_post_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response([
+            'magento/rest/all/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -56,7 +56,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'POST' &&
-                $request->url() == 'http://magento.test/rest/all/V1/products' &&
+                $request->url() == 'magento/rest/all/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -64,7 +64,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_an_async_post_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/V1/products' => Http::response([
+            'magento/rest/all/async/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -85,7 +85,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'POST' &&
-                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
+                $request->url() == 'magento/rest/all/async/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -93,7 +93,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_bulk_post_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+            'magento/rest/all/async/bulk/V1/products' => Http::response([
                 'bulk_uuid' => Str::uuid()->toString(),
                 'request_items' => [
                     [
@@ -132,7 +132,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->method() === 'POST' &&
-                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
                 $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
         });
     }
@@ -140,7 +140,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_put_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response([
+            'magento/rest/all/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -161,7 +161,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'PUT' &&
-                $request->url() == 'http://magento.test/rest/all/V1/products' &&
+                $request->url() == 'magento/rest/all/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -169,7 +169,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_an_async_put_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/V1/products' => Http::response([
+            'magento/rest/all/async/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -190,7 +190,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'PUT' &&
-                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
+                $request->url() == 'magento/rest/all/async/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -198,7 +198,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_bulk_put_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+            'magento/rest/all/async/bulk/V1/products' => Http::response([
                 'bulk_uuid' => Str::uuid()->toString(),
                 'request_items' => [
                     [
@@ -237,7 +237,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->method() === 'PUT' &&
-                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
                 $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
         });
     }
@@ -245,7 +245,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_patch_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products' => Http::response([
+            'magento/rest/all/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -266,7 +266,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'PATCH' &&
-                $request->url() == 'http://magento.test/rest/all/V1/products' &&
+                $request->url() == 'magento/rest/all/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -274,7 +274,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_an_async_patch_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/V1/products' => Http::response([
+            'magento/rest/all/async/V1/products' => Http::response([
                 'product' => [
                     'entity_id' => 1,
                     'sku' => '::some-sku::',
@@ -295,7 +295,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'PATCH' &&
-                $request->url() == 'http://magento.test/rest/all/async/V1/products' &&
+                $request->url() == 'magento/rest/all/async/V1/products' &&
                 $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
@@ -303,7 +303,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_bulk_patch_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/bulk/V1/products' => Http::response([
+            'magento/rest/all/async/bulk/V1/products' => Http::response([
                 'bulk_uuid' => Str::uuid()->toString(),
                 'request_items' => [
                     [
@@ -342,7 +342,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->method() === 'PATCH' &&
-                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products' &&
+                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
                 $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
         });
     }
@@ -350,7 +350,7 @@ class ClientTest extends TestCase
     public function test_it_can_make_a_delete_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products/1' => Http::response([], 204),
+            'magento/rest/all/V1/products/1' => Http::response([], 204),
         ]);
 
         /** @var Magento $magento */
@@ -361,14 +361,14 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'DELETE' &&
-                $request->url() == 'http://magento.test/rest/all/V1/products/1';
+                $request->url() == 'magento/rest/all/V1/products/1';
         });
     }
 
     public function test_it_can_make_an_async_delete_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/V1/products/1' => Http::response([], 204),
+            'magento/rest/all/async/V1/products/1' => Http::response([], 204),
         ]);
 
         /** @var Magento $magento */
@@ -379,14 +379,14 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->method() === 'DELETE' &&
-                $request->url() == 'http://magento.test/rest/all/async/V1/products/1';
+                $request->url() == 'magento/rest/all/async/V1/products/1';
         });
     }
 
     public function test_it_can_make_a_bulk_delete_call(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/async/bulk/V1/products/bySku' => Http::response([
+            'magento/rest/all/async/bulk/V1/products/bySku' => Http::response([
                 'bulk_uuid' => Str::uuid()->toString(),
                 'request_items' => [
                     [
@@ -421,7 +421,7 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->method() === 'DELETE' &&
-                $request->url() == 'http://magento.test/rest/all/async/bulk/V1/products/bySku' &&
+                $request->url() == 'magento/rest/all/async/bulk/V1/products/bySku' &&
                 $request->body() === '[{"sku":"::sku-1::"},{"sku":"::sku-2::"}]';
         });
     }
@@ -429,7 +429,7 @@ class ClientTest extends TestCase
     public function test_it_can_get_results_lazily(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=1' => Http::response([
+            'magento/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=1' => Http::response([
                 'items' => [
                     ['sku' => '1000'],
                     ['sku' => '2000'],
@@ -438,7 +438,7 @@ class ClientTest extends TestCase
                     ['sku' => '5000'],
                 ],
             ]),
-            'http://magento.test/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=2' => Http::response([
+            'magento/rest/all/V1/products?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=sku&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=neq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=something&searchCriteria%5BpageSize%5D=5&searchCriteria%5BcurrentPage%5D=2' => Http::response([
                 'items' => [
                     ['sku' => '6000'],
                     ['sku' => '7000'],
@@ -463,7 +463,7 @@ class ClientTest extends TestCase
     public function test_it_can_set_store_code(): void
     {
         Http::fake([
-            'http://magento.test/rest/store/V1/products*' => Http::response(['items' => []]),
+            'magento/rest/store/V1/products*' => Http::response(['items' => []]),
         ]);
 
         /** @var Magento $magento */
@@ -472,7 +472,7 @@ class ClientTest extends TestCase
         $magento->store('store')->get('products');
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'http://magento.test/rest/store/V1/products';
+            return $request->url() == 'magento/rest/store/V1/products';
         });
     }
 }

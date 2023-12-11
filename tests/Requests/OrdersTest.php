@@ -12,7 +12,7 @@ class OrdersTest extends TestCase
     public function test_it_can_retrieve_by_increment_id(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/orders*' => Http::response([
+            'magento/rest/all/V1/orders*' => Http::response([
                 'items' => [
                     [
                         'increment_id' => '::increment_id::',
@@ -30,14 +30,14 @@ class OrdersTest extends TestCase
         $this->assertEquals('::increment_id::', $order['increment_id']);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() === 'http://magento.test/rest/all/V1/orders?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=increment_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=%3A%3Aincrement_id%3A%3A';
+            return $request->url() === 'magento/rest/all/V1/orders?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=increment_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=%3A%3Aincrement_id%3A%3A';
         });
     }
 
     public function test_it_returns_null_when_order_does_not_exist(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/orders*' => Http::response([
+            'magento/rest/all/V1/orders*' => Http::response([
                 'items' => [],
             ]),
         ]);
@@ -50,14 +50,14 @@ class OrdersTest extends TestCase
         $this->assertNull($order);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() === 'http://magento.test/rest/all/V1/orders?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=increment_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=%3A%3Aincrement_id%3A%3A';
+            return $request->url() === 'magento/rest/all/V1/orders?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=increment_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=%3A%3Aincrement_id%3A%3A';
         });
     }
 
     public function test_it_can_lazily_retrieve_orders(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/orders*' => Http::sequence([
+            'magento/rest/all/V1/orders*' => Http::sequence([
                 Http::response([
                     'items' => [['increment_id' => '::increment_id_1::']],
                 ]),

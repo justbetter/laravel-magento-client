@@ -17,7 +17,7 @@ class Orders
     }
 
     /** @return LazyCollection<int, array> */
-    public function lazy(SearchCriteria $searchCriteria = null, int $pageSize = 100): LazyCollection
+    public function lazy(?SearchCriteria $searchCriteria = null, int $pageSize = 100): LazyCollection
     {
         return $this->retrieveLazily('orders', $pageSize, $searchCriteria);
     }

@@ -7,17 +7,28 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Contracts\BuildsRequest;
+use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 
 class Magento
 {
+    public string $connection;
+
     public ?string $storeCode = null;
 
     public function __construct(
         protected BuildsRequest $request
     ) {
+        $this->connection = config('magento.connection');
     }
 
-    public function store(string $store = null): static
+    public function connection(string $connection): static
+    {
+        $this->connection = $connection;
+
+        return $this;
+    }
+
+    public function store(?string $store = null): static
     {
         $this->storeCode = $store;
 
@@ -27,7 +38,7 @@ class Magento
     public function get(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->get($this->getUrl($path), $data);
+        $response = $this->request->build($this->connection)->get($this->getUrl($path), $data);
 
         return $response;
     }
@@ -35,7 +46,7 @@ class Magento
     public function post(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->post($this->getUrl($path), $data);
+        $response = $this->request->build($this->connection)->post($this->getUrl($path), $data);
 
         return $response;
     }
@@ -43,7 +54,7 @@ class Magento
     public function postAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->post($this->getUrl($path, true), $data);
+        $response = $this->request->build($this->connection)->post($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -51,7 +62,7 @@ class Magento
     public function postBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->post($this->getUrl($path, true, true), $data);
+        $response = $this->request->build($this->connection)->post($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -59,7 +70,7 @@ class Magento
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->patch($this->getUrl($path), $data);
+        $response = $this->request->build($this->connection)->patch($this->getUrl($path), $data);
 
         return $response;
     }
@@ -67,7 +78,7 @@ class Magento
     public function patchAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->patch($this->getUrl($path, true), $data);
+        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -75,7 +86,7 @@ class Magento
     public function patchBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->patch($this->getUrl($path, true, true), $data);
+        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -83,7 +94,7 @@ class Magento
     public function put(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->put($this->getUrl($path), $data);
+        $response = $this->request->build($this->connection)->put($this->getUrl($path), $data);
 
         return $response;
     }
@@ -91,7 +102,7 @@ class Magento
     public function putAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->put($this->getUrl($path, true), $data);
+        $response = $this->request->build($this->connection)->put($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -99,7 +110,7 @@ class Magento
     public function putBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->put($this->getUrl($path, true, true), $data);
+        $response = $this->request->build($this->connection)->put($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -107,7 +118,7 @@ class Magento
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->delete($this->getUrl($path), $data);
+        $response = $this->request->build($this->connection)->delete($this->getUrl($path), $data);
 
         return $response;
     }
@@ -115,7 +126,7 @@ class Magento
     public function deleteAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->delete($this->getUrl($path, true), $data);
+        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -123,7 +134,7 @@ class Magento
     public function deleteBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build()->delete($this->getUrl($path, true, true), $data);
+        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -156,9 +167,12 @@ class Magento
 
     public function getUrl(string $path, bool $async = false, bool $bulk = false): string
     {
+        /** @var array $config */
+        $config = config('magento.connections.'.$this->connection);
+
         $options = [
-            config('magento.base_path', 'rest'),
-            $this->storeCode ?? config('magento.store_code', 'all'),
+            $config['base_path'] ?? 'rest',
+            $this->storeCode ?? $config['store_code'] ?? 'all',
         ];
 
         if ($async || $bulk) {
@@ -169,7 +183,7 @@ class Magento
             }
         }
 
-        $options[] = config('magento.version', 'V1');
+        $options[] = $config['version'] ?? 'V1';
         $options[] = $path;
 
         return implode('/', $options);
@@ -177,8 +191,9 @@ class Magento
 
     public static function fake(): void
     {
-        config()->set('magento', [
-            'base_url' => 'http://magento.test',
+        config()->set('magento.connection', 'default');
+        config()->set('magento.connections.default', [
+            'base_url' => 'magento',
             'base_path' => 'rest',
             'store_code' => 'all',
             'version' => 'V1',
@@ -186,15 +201,12 @@ class Magento
             'timeout' => 30,
             'connect_timeout' => 10,
             'authentication_method' => 'token',
-            'oauth' => [
-                'middleware' => [],
-                'prefix' => 'magento/oauth',
-                'file' => [
-                    'disk' => 'local',
-                    'path' => 'secret/magento2_oauth.json',
-                    'visibility' => 'private',
-                ],
-            ],
+        ]);
+
+        config()->set('magento.oauth', [
+            'middleware' => [],
+            'prefix' => 'magento/oauth',
+            'keystore' => FileKeyStore::class,
         ]);
     }
 }

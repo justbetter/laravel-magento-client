@@ -8,14 +8,14 @@ use JustBetter\MagentoClient\Enums\AuthenticationMethod;
 
 class AuthenticateRequest implements AuthenticatesRequest
 {
-    public function authenticate(PendingRequest $request): PendingRequest
+    public function authenticate(string $connection, PendingRequest $request): PendingRequest
     {
         /** @var string $method */
-        $method = config('magento.authentication_method');
+        $method = config('magento.connections.'.$connection.'.authentication_method');
 
         $auth = AuthenticationMethod::from($method);
 
-        return $auth->provider()->authenticate($request);
+        return $auth->provider()->authenticate($connection, $request);
     }
 
     public static function bind(): void
