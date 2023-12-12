@@ -44,6 +44,6 @@ return [
         'prefix' => 'magento/oauth',
 
         /* Class that manages how the keys are stored */
-        'keystore' => \JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore::class,
+        'keystore' => \JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore::class,
     ],
 ];
