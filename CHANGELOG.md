@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/1.5.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.0.0...main)
+## [2.0.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.0.0) - 2023-12-13
+
+### What's Changed
+* Support multiple connections by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/31
+
+See UPGRADE.md on how to upgrade from 1.x
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/1.5.0...2.0.0
+
 ## [1.5.0](https://github.com/justbetter/laravel-magento-client/releases/tag/1.5.0) - 2023-09-16
 
 ### What's Changed
