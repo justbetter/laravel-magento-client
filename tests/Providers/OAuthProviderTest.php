@@ -5,7 +5,7 @@ namespace JustBetter\MagentoClient\Tests\Providers;
 use Exception;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Http;
-use JustBetter\MagentoClient\Contracts\OAuth\ManagesKeys;
+use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 use JustBetter\MagentoClient\Providers\OAuthProvider;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
@@ -16,7 +16,7 @@ class OAuthProviderTest extends TestCase
     /** @test */
     public function it_can_authenticate_requests(): void
     {
-        $this->mock(ManagesKeys::class, function (MockInterface $mock): void {
+        $this->mock(FileKeyStore::class, function (MockInterface $mock): void {
             $mock
                 ->shouldReceive('get')
                 ->once()
@@ -33,7 +33,7 @@ class OAuthProviderTest extends TestCase
 
         /** @var OAuthProvider $provider */
         $provider = app(OAuthProvider::class);
-        $provider->authenticate($pendingRequest);
+        $provider->authenticate($pendingRequest, 'default');
 
         $authorization = null;
 

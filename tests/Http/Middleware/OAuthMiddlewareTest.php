@@ -12,7 +12,7 @@ class OAuthMiddlewareTest extends TestCase
     /** @test */
     public function it_can_pass(): void
     {
-        config()->set('magento.authentication_method', 'oauth');
+        config()->set('magento.connections.default.authentication_method', 'oauth');
 
         /** @var OAuthMiddleware $middleware */
         $middleware = app(OAuthMiddleware::class);

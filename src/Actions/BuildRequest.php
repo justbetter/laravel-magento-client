@@ -14,15 +14,18 @@ class BuildRequest implements BuildsRequest
     ) {
     }
 
-    public function build(): PendingRequest
+    public function build(string $connection): PendingRequest
     {
-        $pendingRequest = Http::baseUrl(config('magento.base_url'))
-            ->timeout(config('magento.timeout'))
-            ->connectTimeout(config('magento.connect_timeout'))
+        /** @var array $options */
+        $options = config('magento.connections.'.$connection);
+
+        $pendingRequest = Http::baseUrl($options['base_url'])
+            ->timeout($options['timeout'])
+            ->connectTimeout($options['connect_timeout'])
             ->acceptJson()
             ->asJson();
 
-        return $this->request->authenticate($pendingRequest);
+        return $this->request->authenticate($pendingRequest, $connection);
     }
 
     public static function bind(): void

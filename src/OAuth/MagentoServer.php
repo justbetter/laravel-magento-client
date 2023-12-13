@@ -13,9 +13,11 @@ class MagentoServer extends Server
 {
     public string $verifier;
 
+    public string $connection;
+
     public function urlTemporaryCredentials(): string
     {
-        return config('magento.base_url').'/oauth/token/request';
+        return config('magento.connections.'.$this->connection.'.base_url').'/oauth/token/request';
     }
 
     public function urlAuthorization(): string
@@ -25,7 +27,7 @@ class MagentoServer extends Server
 
     public function urlTokenCredentials(): string
     {
-        return config('magento.base_url').'/oauth/token/access';
+        return config('magento.connections.'.$this->connection.'.base_url').'/oauth/token/access';
     }
 
     public function getTokenCredentials(TemporaryCredentials $temporaryCredentials, $temporaryIdentifier, $verifier)
