@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoClient\Tests\OAuth\KeyStore;
 
 use Illuminate\Support\Facades\Storage;
-use JustBetter\MagentoClient\Models\OauthKey;
+use JustBetter\MagentoClient\Models\OAuthKey;
 use JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore;
 use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
@@ -28,7 +28,7 @@ class DatabaseKeyStoreTest extends TestCase
 
         $store = KeyStore::instance();
 
-        OauthKey::query()->create([
+        OAuthKey::query()->create([
             'magento_connection' => 'default',
             'keys' => $content,
         ]);
@@ -60,7 +60,7 @@ class DatabaseKeyStoreTest extends TestCase
             'key' => 'value',
         ];
 
-        OauthKey::query()->create([
+        OAuthKey::query()->create([
             'magento_connection' => 'default',
             'keys' => $content,
         ]);

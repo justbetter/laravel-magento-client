@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  */
-class OauthKey extends Model
+class OAuthKey extends Model
 {
     protected $table = 'magento_oauth_keys';
 

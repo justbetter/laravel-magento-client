@@ -2,21 +2,21 @@
 
 namespace JustBetter\MagentoClient\OAuth\KeyStore;
 
-use JustBetter\MagentoClient\Models\OauthKey;
+use JustBetter\MagentoClient\Models\OAuthKey;
 
 class DatabaseKeyStore extends KeyStore
 {
     public function get(string $connection): array
     {
-        /** @var ?OauthKey $key */
-        $key = OauthKey::query()->firstWhere('magento_connection', '=', $connection);
+        /** @var ?OAuthKey $key */
+        $key = OAuthKey::query()->firstWhere('magento_connection', '=', $connection);
 
         return $key?->keys ?? [];
     }
 
     public function set(string $connection, array $data): void
     {
-        OauthKey::query()->updateOrCreate(
+        OAuthKey::query()->updateOrCreate(
             [
                 'magento_connection' => $connection,
             ],

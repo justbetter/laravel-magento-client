@@ -77,7 +77,7 @@ php artisan vendor:publish --provider="JustBetter\MagentoClient\ServiceProvider"
 ## Multiple connections
 
 This package supports connecting to multiple Magento instances.
-In the configuration file you will find an array with the connections where you can configure each conn ection.
+In the configuration file you will find an array with the connections where you can configure each connection.
 
 ```php
     'connection' => 'default',
@@ -98,6 +98,13 @@ In the configuration file you will find an array with the connections where you 
 
 The `connection` setting sets which connection is used by default.
 You can switch connections by using the `connection` method on the client.
+
+```php
+/** @var \JustBetter\MagentoClient\Client\Magento $client */
+$client = app(\JustBetter\MagentoClient\Client\Magento::class);
+
+$client->connection('connection_one')->get('products');
+```
 
 ## Authentication
 
@@ -124,7 +131,7 @@ Identity link URL: https://example.com/magento/oauth/identity/{connection}
 
 `connection` is the key in your connections array in the configuration file.
 
-When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in the database, as configured in `magento.php`. You may adjust to save the keys on in a JSON file or create your own implementation.
+When creating the integration, Magento will send multiple tokens and secrets to your application via the `callback`-endpoint. This information will be saved in the database, as configured in `magento.php`. You may adjust this to save the key in a JSON file or create your own implementation
 Magento will redirect you to the `identity`-endpoint in order to activate the integration.
 
 For more information about OAuth 1.0 in Magento, please consult the [documentation](https://developer.adobe.com/commerce/webapi/get-started/authentication/gs-authentication-oauth).
