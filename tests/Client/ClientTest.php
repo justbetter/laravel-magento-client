@@ -10,6 +10,33 @@ use JustBetter\MagentoClient\Tests\TestCase;
 
 class ClientTest extends TestCase
 {
+    public function test_it_can_make_a_graphql_call(): void
+    {
+        Http::fake([
+            'graphql' => Http::response([
+                'data' => [
+                    'currency' => [
+                        'base_currency_code' => 'EUR'
+                    ]
+                ]
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $response = $magento->store('default')->graphql('query { currency { base_currency_code } }', []);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertEquals('EUR', $response->json('data.currency.base_currency_code'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'POST'
+                && $request->url() == 'magento/graphql'
+                && $request->body() === '{"query":"query { currency { base_currency_code } }","variables":[]}';
+        });
+    }
+
     public function test_it_can_make_a_get_call(): void
     {
         Http::fake([

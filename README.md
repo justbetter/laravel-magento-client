@@ -164,7 +164,7 @@ public function __construct(
 $client = app(\JustBetter\MagentoClient\Client\Magento::class);
 ```
 
-After you got an instance you can use the `get`, `post`, `put` and `patch` methods to use the Magento API.
+After you got an instance you can use the `graphql`, `get`, `post`, `put` and `patch` methods to use the Magento API.
 
 ### SearchCriteria / Filtering
 
@@ -196,6 +196,30 @@ $client = app(\JustBetter\MagentoClient\Client\Magento::class);
 
 $client->connection('connection_one')->get('products');
 $client->connection('connection_two')->get('products');
+```
+
+### GraphQL
+
+You can run authenticated GraphQL queries using the `graphql` method on the client.
+
+```php
+/** @var \JustBetter\MagentoClient\Client\Magento $client */
+$client = app(\JustBetter\MagentoClient\Client\Magento::class);
+
+$client->graphql(
+    'query searchProducts($search: String) {
+        products(
+            search: $search
+        ) {
+            items {
+            sku
+            }
+        }
+    }',
+    [
+        'search' => 'test'
+    ]
+);
 ```
 
 ### More Examples
