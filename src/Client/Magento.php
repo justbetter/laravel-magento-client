@@ -40,7 +40,7 @@ class Magento
     {
         /** @var Response $response */
         $response = $this->request->build($this->connection)
-            ->when($this->storeCode !== null, fn(PendingRequest $request) => $request->withHeader('Store', $this->storeCode))
+            ->when($this->storeCode !== null, fn(PendingRequest $request) => $request->withHeaders(['Store' => $this->storeCode]))
             ->post('/graphql', [
                 'query' => $query,
                 'variables' => $variables
