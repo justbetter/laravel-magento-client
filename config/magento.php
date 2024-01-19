@@ -12,6 +12,9 @@ return [
             /* Base path, only modify if your API is not at /rest */
             'base_path' => env('MAGENTO_BASE_PATH', 'rest'),
 
+            /* Graphql path, only modify if your API is not at /graphql */
+            'graphql_path' => env('MAGENTO_GRAPHQL_PATH', 'graphql'),
+
             /* Store code, modify if you want to set a store by default. */
             'store_code' => env('MAGENTO_STORE_CODE', 'all'),
 

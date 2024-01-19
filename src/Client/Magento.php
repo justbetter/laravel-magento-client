@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoClient\Client;
 
 use Generator;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
@@ -33,6 +34,22 @@ class Magento
         $this->storeCode = $store;
 
         return $this;
+    }
+
+    public function graphql(string $query, array $variables = []): Response
+    {
+        /** @var string $endpoint */
+        $endpoint = config("magento.connections.{$this->connection}.graphql_path");
+
+        /** @var Response $response */
+        $response = $this->request->build($this->connection)
+            ->when($this->storeCode !== null, fn (PendingRequest $request): PendingRequest => $request->withHeaders(['Store' => $this->storeCode]))
+            ->post($endpoint, [
+                'query' => $query,
+                'variables' => $variables,
+            ]);
+
+        return $response;
     }
 
     public function get(string $path, array $data = []): Response
@@ -195,6 +212,7 @@ class Magento
         config()->set('magento.connections.default', [
             'base_url' => 'magento',
             'base_path' => 'rest',
+            'graphql_path' => 'graphql',
             'store_code' => 'all',
             'version' => 'V1',
             'access_token' => '::token::',
