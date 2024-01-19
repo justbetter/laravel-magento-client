@@ -16,24 +16,26 @@ class ClientTest extends TestCase
             'graphql' => Http::response([
                 'data' => [
                     'currency' => [
-                        'base_currency_code' => 'EUR'
-                    ]
-                ]
+                        'base_currency_code' => 'EUR',
+                    ],
+                ],
             ]),
         ]);
 
         /** @var Magento $magento */
         $magento = app(Magento::class);
 
-        $response = $magento->store('default')->graphql('query { currency { base_currency_code } }', []);
+        $response = $magento->store('default')->graphql('query { currency { base_currency_code } }', ['testing']);
 
-        $this->assertEquals(true, $response->ok());
+        $this->assertTrue($response->ok());
         $this->assertEquals('EUR', $response->json('data.currency.base_currency_code'));
 
-        Http::assertSent(function (Request $request) {
+        Http::assertSent(function (Request $request): bool {
+
             return $request->method() === 'POST'
-                && $request->url() == 'magento/graphql'
-                && $request->body() === '{"query":"query { currency { base_currency_code } }","variables":[]}';
+                && $request->url() === 'magento/graphql'
+                && $request->body() === '{"query":"query { currency { base_currency_code } }","variables":["testing"]}'
+                && $request->header('Store') === ['default'];
         });
     }
 

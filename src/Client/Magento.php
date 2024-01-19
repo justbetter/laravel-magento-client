@@ -38,12 +38,15 @@ class Magento
 
     public function graphql(string $query, array $variables = []): Response
     {
+        /** @var string $endpoint */
+        $endpoint = config("magento.connections.{$this->connection}.graphql_path");
+
         /** @var Response $response */
         $response = $this->request->build($this->connection)
-            ->when($this->storeCode !== null, fn(PendingRequest $request) => $request->withHeaders(['Store' => $this->storeCode]))
-            ->post('/graphql', [
+            ->when($this->storeCode !== null, fn (PendingRequest $request): PendingRequest => $request->withHeaders(['Store' => $this->storeCode]))
+            ->post($endpoint, [
                 'query' => $query,
-                'variables' => $variables
+                'variables' => $variables,
             ]);
 
         return $response;
@@ -209,6 +212,7 @@ class Magento
         config()->set('magento.connections.default', [
             'base_url' => 'magento',
             'base_path' => 'rest',
+            'graphql_path' => 'graphql',
             'store_code' => 'all',
             'version' => 'V1',
             'access_token' => '::token::',
