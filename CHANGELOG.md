@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.0.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.1.0...main)
+## [2.1.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.1.0) - 2024-01-19
+
+### What's Changed
+* Add Graphql support by @indykoning in https://github.com/justbetter/laravel-magento-client/pull/32
+
+### New Contributors
+* @indykoning made their first contribution in https://github.com/justbetter/laravel-magento-client/pull/32
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.0.0...2.1.0
+
 ## [2.0.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.0.0) - 2023-12-13
 
 ### What's Changed
