@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoClient\Client;
 
 use Generator;
+use InvalidArgumentException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Enumerable;
@@ -15,6 +16,8 @@ class Magento
     public string $connection;
 
     public ?string $storeCode = null;
+
+    protected ?PendingRequest $pendingRequest = null;
 
     public function __construct(
         protected BuildsRequest $request
@@ -54,8 +57,9 @@ class Magento
 
     public function get(string $path, array $data = []): Response
     {
-        /** @var Response $response */
-        $response = $this->request->build($this->connection)->get($this->getUrl($path), $data);
+        $response = $this->buildConnection()->get($this->getUrl($path), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -63,7 +67,9 @@ class Magento
     public function post(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path), $data);
+        $response = $this->buildConnection()->post($this->getUrl($path), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -71,7 +77,9 @@ class Magento
     public function postAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path, true), $data);
+        $response = $this->buildConnection()->post($this->getUrl($path, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -79,7 +87,9 @@ class Magento
     public function postBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path, true, true), $data);
+        $response = $this->buildConnection()->post($this->getUrl($path, true, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -87,7 +97,9 @@ class Magento
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path), $data);
+        $response = $this->buildConnection()->patch($this->getUrl($path), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -95,7 +107,9 @@ class Magento
     public function patchAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true), $data);
+        $response = $this->buildConnection()->patch($this->getUrl($path, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -103,7 +117,9 @@ class Magento
     public function patchBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true, true), $data);
+        $response = $this->buildConnection()->patch($this->getUrl($path, true, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -111,7 +127,9 @@ class Magento
     public function put(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path), $data);
+        $response = $this->buildConnection()->put($this->getUrl($path), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -119,7 +137,9 @@ class Magento
     public function putAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path, true), $data);
+        $response = $this->buildConnection()->put($this->getUrl($path, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -127,7 +147,9 @@ class Magento
     public function putBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path, true, true), $data);
+        $response = $this->buildConnection()->put($this->getUrl($path, true, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -135,7 +157,9 @@ class Magento
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path), $data);
+        $response = $this->buildConnection()->delete($this->getUrl($path), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -143,7 +167,9 @@ class Magento
     public function deleteAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true), $data);
+        $response = $this->buildConnection()->delete($this->getUrl($path, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -151,7 +177,9 @@ class Magento
     public function deleteBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true, true), $data);
+        $response = $this->buildConnection()->delete($this->getUrl($path, true, true), $data);
+
+        $this->resetConnection();
 
         return $response;
     }
@@ -204,6 +232,31 @@ class Magento
         $options[] = $path;
 
         return implode('/', $options);
+    }
+
+    public function intercept(mixed $callable): Magento
+    {
+        if (! is_callable($callable)) {
+            throw new InvalidArgumentException('The first argument is not callable.');
+        }
+
+        $callable($this->buildConnection());
+
+        return $this;
+    }
+
+    protected function buildConnection(): PendingRequest
+    {
+        if (! $this->pendingRequest) {
+            $this->pendingRequest = $this->request->build($this->connection);
+        }
+
+        return $this->pendingRequest;
+    }
+
+    protected function resetConnection(): void
+    {
+        $this->pendingRequest = null;
     }
 
     public static function fake(): void

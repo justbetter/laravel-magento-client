@@ -5,6 +5,7 @@ namespace JustBetter\MagentoClient\Tests\Client;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Http\Client\PendingRequest;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Tests\TestCase;
 
@@ -502,6 +503,79 @@ class ClientTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->url() == 'magento/rest/store/V1/products';
+        });
+    }
+
+    public function test_it_can_intersect_the_client_and_adjust_its_body_format()
+    {
+        Http::fake([
+            'magento/rest/all/V1/products*' => Http::response(['items' => []]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $result = $magento->intercept(function (PendingRequest $request) {
+            $request->asForm();
+        });
+
+        $this->assertInstanceOf(Magento::class, $result);
+
+        $response = $magento->get('products', [
+            'searchCriteria[pageSize]' => 10,
+            'searchCriteria[currentPage]' => 0,
+        ]);
+
+        $request = $response->transferStats->getRequest();
+
+        $this->assertEquals('application/x-www-form-urlencoded', $request->getHeader('Content-Type')[0]);
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(0, $response->json('items'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'GET' &&
+                $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0';
+        });
+    }
+
+    public function test_it_can_intersect_the_client_and_adjust_its_headers()
+    {
+        Http::fake([
+            'magento/rest/all/V1/products' => Http::response([
+                'product' => [
+                    'entity_id' => 1,
+                    'sku' => '::some-sku::',
+                ],
+            ]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $result = $magento->intercept(function (PendingRequest $request) {
+            $request->withHeader('TEST', 'test');
+        });
+
+        $this->assertInstanceOf(Magento::class, $result);
+
+        $response = $magento->post('products', [
+            'product' => [
+                'sku' => '::some-sku::',
+            ],
+        ]);
+
+        $request = $response->transferStats->getRequest();
+
+        $this->assertTrue($request->hasHeader('TEST'));
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertCount(2, $response->json('product'));
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'POST' &&
+                $request->url() == 'magento/rest/all/V1/products' &&
+                $request->body() === '{"product":{"sku":"::some-sku::"}}';
         });
     }
 }
