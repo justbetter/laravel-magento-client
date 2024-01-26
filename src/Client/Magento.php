@@ -2,6 +2,7 @@
 
 namespace JustBetter\MagentoClient\Client;
 
+use Closure;
 use Generator;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
@@ -15,6 +16,8 @@ class Magento
     public string $connection;
 
     public ?string $storeCode = null;
+
+    public ?Closure $interceptor;
 
     public function __construct(
         protected BuildsRequest $request
@@ -42,7 +45,7 @@ class Magento
         $endpoint = config("magento.connections.{$this->connection}.graphql_path");
 
         /** @var Response $response */
-        $response = $this->request->build($this->connection)
+        $response = $this->request()
             ->when($this->storeCode !== null, fn (PendingRequest $request): PendingRequest => $request->withHeaders(['Store' => $this->storeCode]))
             ->post($endpoint, [
                 'query' => $query,
@@ -54,8 +57,7 @@ class Magento
 
     public function get(string $path, array $data = []): Response
     {
-        /** @var Response $response */
-        $response = $this->request->build($this->connection)->get($this->getUrl($path), $data);
+        $response = $this->request()->get($this->getUrl($path), $data);
 
         return $response;
     }
@@ -63,7 +65,7 @@ class Magento
     public function post(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path), $data);
+        $response = $this->request()->post($this->getUrl($path), $data);
 
         return $response;
     }
@@ -71,7 +73,7 @@ class Magento
     public function postAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path, true), $data);
+        $response = $this->request()->post($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -79,7 +81,7 @@ class Magento
     public function postBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->post($this->getUrl($path, true, true), $data);
+        $response = $this->request()->post($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -87,7 +89,7 @@ class Magento
     public function patch(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path), $data);
+        $response = $this->request()->patch($this->getUrl($path), $data);
 
         return $response;
     }
@@ -95,7 +97,7 @@ class Magento
     public function patchAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true), $data);
+        $response = $this->request()->patch($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -103,7 +105,7 @@ class Magento
     public function patchBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->patch($this->getUrl($path, true, true), $data);
+        $response = $this->request()->patch($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -111,7 +113,7 @@ class Magento
     public function put(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path), $data);
+        $response = $this->request()->put($this->getUrl($path), $data);
 
         return $response;
     }
@@ -119,7 +121,7 @@ class Magento
     public function putAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path, true), $data);
+        $response = $this->request()->put($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -127,7 +129,7 @@ class Magento
     public function putBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->put($this->getUrl($path, true, true), $data);
+        $response = $this->request()->put($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -135,7 +137,7 @@ class Magento
     public function delete(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path), $data);
+        $response = $this->request()->delete($this->getUrl($path), $data);
 
         return $response;
     }
@@ -143,7 +145,7 @@ class Magento
     public function deleteAsync(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true), $data);
+        $response = $this->request()->delete($this->getUrl($path, true), $data);
 
         return $response;
     }
@@ -151,7 +153,7 @@ class Magento
     public function deleteBulk(string $path, array $data = []): Response
     {
         /** @var Response $response */
-        $response = $this->request->build($this->connection)->delete($this->getUrl($path, true, true), $data);
+        $response = $this->request()->delete($this->getUrl($path, true, true), $data);
 
         return $response;
     }
@@ -204,6 +206,25 @@ class Magento
         $options[] = $path;
 
         return implode('/', $options);
+    }
+
+    public function intercept(Closure $callable): static
+    {
+        $this->interceptor = $callable;
+
+        return $this;
+    }
+
+    protected function request(): PendingRequest
+    {
+        $request = $this->request->build($this->connection);
+
+        if (isset($this->interceptor)) {
+            call_user_func($this->interceptor, $request);
+            $this->interceptor = null;
+        }
+
+        return $request;
     }
 
     public static function fake(): void
