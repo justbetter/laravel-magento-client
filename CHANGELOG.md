@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.1.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.2.0...main)
+## [2.2.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.2.0) - 2024-01-26
+
+### What's Changed
+* PendingRequest changes per cycle. by @mennotempelaar in https://github.com/justbetter/laravel-magento-client/pull/34
+
+### New Contributors
+* @mennotempelaar made their first contribution in https://github.com/justbetter/laravel-magento-client/pull/34
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.1.0...2.2.0
+
 ## [2.1.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.1.0) - 2024-01-19
 
 ### What's Changed
