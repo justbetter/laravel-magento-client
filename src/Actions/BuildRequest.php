@@ -22,19 +22,8 @@ class BuildRequest implements BuildsRequest
         $pendingRequest = Http::baseUrl($options['base_url'])
             ->timeout($options['timeout'])
             ->connectTimeout($options['connect_timeout'])
-            ->acceptJson();
-
-        switch ($options['body_format']) {
-            case 'multipart':
-                $pendingRequest->asMultipart();
-                break;
-            case 'form':
-                $pendingRequest->asForm();
-                break;
-            default:
-                $pendingRequest->asJson();
-                break;
-        }
+            ->acceptJson()
+            ->asJson();
 
         return $this->request->authenticate($pendingRequest, $connection);
     }

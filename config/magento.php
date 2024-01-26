@@ -32,8 +32,6 @@ return [
 
             /* Authentication method, choose either "oauth" or "token". */
             'authentication_method' => env('MAGENTO_AUTH_METHOD', 'token'),
-
-            'body_format' => env('MAGENTO_BODY_FORMAT', 'json'),
         ],
     ],
 
