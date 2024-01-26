@@ -551,7 +551,7 @@ class ClientTest extends TestCase
         $magento = app(Magento::class);
 
         $magento->intercept(function (PendingRequest $request) {
-            $request->withHeader('some-header', '::test::');
+            $request->withHeaders(['some-header' => '::test::']);
         })->post('products', [
             'product' => [
                 'sku' => '::some-sku::',
