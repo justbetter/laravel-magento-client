@@ -180,6 +180,7 @@ $search = \JustBetter\MagentoClient\Query\SearchCriteria::make()
         ->orWhere('price', '>', 10),
         ->whereIn('sku', ['123', '456'])
         ->orWhereNull('name')
+        ->orderBy('sku')
         ->paginate(1, 50)
         ->get();
 ```

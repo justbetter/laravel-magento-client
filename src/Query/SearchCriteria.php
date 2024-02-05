@@ -10,12 +10,15 @@ class SearchCriteria
 
     public array $wheres = [];
 
+    public array $orders = [];
+
     protected int $currentFilterGroup = 0;
 
     protected int $currentFilterIndex = 0;
 
-    public function __construct(protected Grammar $grammar)
-    {
+    public function __construct(
+        protected Grammar $grammar
+    ) {
     }
 
     public function paginate(int $page, int $pageSize): static
@@ -169,11 +172,27 @@ class SearchCriteria
         return $this;
     }
 
+    public function orderBy(string $field, string $direction = 'ASC'): static
+    {
+        $index = count($this->orders) / 2;
+
+        $this->orders["searchCriteria[sortOrders][$index][field]"] = $field;
+        $this->orders["searchCriteria[sortOrders][$index][direction]"] = $direction;
+
+        return $this;
+    }
+
+    public function orderByDesc(string $field): static
+    {
+        return $this->orderBy($field, 'DESC');
+    }
+
     public function get(): array
     {
         return array_merge(
             $this->select,
             $this->wheres,
+            $this->orders,
             $this->pagination,
         );
     }
