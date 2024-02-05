@@ -260,4 +260,43 @@ class SearchCriteriaTest extends TestCase
             'searchCriteria[filter_groups][0][filters][1][condition_type]' => 'notnull',
         ], $searchCriteria);
     }
+
+    public function test_it_can_orderBy(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->orderBy('sku')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[sortOrders][0][field]' => 'sku',
+            'searchCriteria[sortOrders][0][direction]' => 'ASC',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_orderByDesc(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->orderByDesc('sku')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[sortOrders][0][field]' => 'sku',
+            'searchCriteria[sortOrders][0][direction]' => 'DESC',
+        ], $searchCriteria);
+    }
+
+    public function test_it_can_add_multiple_orders(): void
+    {
+        $searchCriteria = SearchCriteria::make()
+            ->orderBy('sku')
+            ->orderByDesc('entity_id')
+            ->get();
+
+        $this->assertEquals([
+            'searchCriteria[sortOrders][0][field]' => 'sku',
+            'searchCriteria[sortOrders][0][direction]' => 'ASC',
+            'searchCriteria[sortOrders][1][field]' => 'entity_id',
+            'searchCriteria[sortOrders][1][direction]' => 'DESC',
+        ], $searchCriteria);
+    }
 }
