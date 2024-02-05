@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.2.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.3.0...main)
+## [2.3.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.3.0) - 2024-02-05
+
+### What's Changed
+* Added ordering to the search criteria by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/35
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.2.0...2.3.0
+
 ## [2.2.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.2.0) - 2024-01-26
 
 ### What's Changed
