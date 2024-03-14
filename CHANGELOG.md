@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.3.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.4.0...main)
+## [2.4.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.4.0) - 2024-03-14
+
+### What's Changed
+* Added support for Laravel 11 by @ramonrietdijk in https://github.com/justbetter/laravel-magento-client/pull/37
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.3.0...2.4.0
+
 ## [2.3.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.3.0) - 2024-02-05
 
 ### What's Changed
