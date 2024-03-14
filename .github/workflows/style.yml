@@ -11,12 +11,12 @@ jobs:
 
         steps:
             -   name: Checkout code
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.2
+                    php-version: 8.3
                     extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
