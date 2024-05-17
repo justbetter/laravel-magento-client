@@ -4,9 +4,11 @@ namespace JustBetter\MagentoClient\Tests\Client;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use JustBetter\MagentoClient\Client\Magento;
+use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\Tests\TestCase;
 
 class ClientTest extends TestCase
@@ -568,5 +570,26 @@ class ClientTest extends TestCase
             fn (Request $request) => $request->hasHeader('some-header'),
             fn (Request $request) => ! $request->hasHeader('some-header'),
         ]);
+    }
+
+    public function test_it_dispatches_event(): void
+    {
+        Event::fake();
+
+        Http::fake([
+            'magento/rest/all/V1/products*' => Http::response(['items' => ['item']]),
+        ]);
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $magento->get('products', [
+            'searchCriteria[pageSize]' => 10,
+            'searchCriteria[currentPage]' => 0,
+        ]);
+
+        Event::assertDispatched(MagentoResponseEvent::class, function (MagentoResponseEvent $event): bool {
+            return $event->response->ok() && $event->response->json('items') === ['item'];
+        });
     }
 }

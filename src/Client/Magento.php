@@ -9,6 +9,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Contracts\BuildsRequest;
+use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 
 class Magento
@@ -52,14 +53,14 @@ class Magento
                 'variables' => $variables,
             ]);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function get(string $path, array $data = []): Response
     {
         $response = $this->request()->get($this->getUrl($path), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function post(string $path, array $data = []): Response
@@ -67,7 +68,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->post($this->getUrl($path), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function postAsync(string $path, array $data = []): Response
@@ -75,7 +76,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->post($this->getUrl($path, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function postBulk(string $path, array $data = []): Response
@@ -83,7 +84,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->post($this->getUrl($path, true, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function patch(string $path, array $data = []): Response
@@ -91,7 +92,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->patch($this->getUrl($path), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function patchAsync(string $path, array $data = []): Response
@@ -99,7 +100,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->patch($this->getUrl($path, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function patchBulk(string $path, array $data = []): Response
@@ -107,7 +108,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->patch($this->getUrl($path, true, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function put(string $path, array $data = []): Response
@@ -115,7 +116,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->put($this->getUrl($path), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function putAsync(string $path, array $data = []): Response
@@ -123,7 +124,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->put($this->getUrl($path, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function putBulk(string $path, array $data = []): Response
@@ -131,7 +132,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->put($this->getUrl($path, true, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function delete(string $path, array $data = []): Response
@@ -139,7 +140,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->delete($this->getUrl($path), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function deleteAsync(string $path, array $data = []): Response
@@ -147,7 +148,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->delete($this->getUrl($path, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     public function deleteBulk(string $path, array $data = []): Response
@@ -155,7 +156,7 @@ class Magento
         /** @var Response $response */
         $response = $this->request()->delete($this->getUrl($path, true, true), $data);
 
-        return $response;
+        return $this->handleResponse($response);
     }
 
     /** @return LazyCollection<int, array> */
@@ -225,6 +226,13 @@ class Magento
         }
 
         return $request;
+    }
+
+    protected function handleResponse(Response $response): Response
+    {
+        MagentoResponseEvent::dispatch($response);
+
+        return $response;
     }
 
     public static function fake(): void
