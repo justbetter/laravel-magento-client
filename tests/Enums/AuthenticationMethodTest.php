@@ -15,6 +15,7 @@ class AuthenticationMethodTest extends TestCase
     #[DataProvider('providers')]
     public function it_can_get_the_provider(AuthenticationMethod $authenticationMethod, string $expectedProvider): void
     {
+        /** @var class-string $expectedProvider */
         $this->assertInstanceOf($expectedProvider, $authenticationMethod->provider());
     }
 
