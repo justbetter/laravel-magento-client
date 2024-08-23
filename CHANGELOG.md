@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.5.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.6.0...main)
+## [2.6.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.6.0) - 2024-08-23
+
+### What's Changed
+* Check Magento availability by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/42
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.5.0...2.6.0
+
 ## [2.5.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.5.0) - 2024-05-21
 
 ### What's Changed
