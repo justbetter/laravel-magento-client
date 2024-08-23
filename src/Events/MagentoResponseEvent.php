@@ -10,8 +10,8 @@ class MagentoResponseEvent
     use Dispatchable;
 
     public function __construct(
-        public Response $response
+        public Response $response,
+        public string $connection,
     ) {
-
     }
 }

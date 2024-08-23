@@ -9,6 +9,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use JustBetter\MagentoClient\Contracts\BuildsRequest;
+use JustBetter\MagentoClient\Contracts\ChecksMagento;
 use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 
@@ -21,7 +22,8 @@ class Magento
     public ?Closure $interceptor;
 
     public function __construct(
-        protected BuildsRequest $request
+        protected BuildsRequest $request,
+        protected ChecksMagento $checksMagento,
     ) {
         $this->connection = config('magento.connection');
     }
@@ -185,6 +187,11 @@ class Magento
         });
     }
 
+    public function available(): bool
+    {
+        return $this->checksMagento->available($this->connection);
+    }
+
     public function getUrl(string $path, bool $async = false, bool $bulk = false): string
     {
         /** @var array $config */
@@ -230,7 +237,7 @@ class Magento
 
     protected function handleResponse(Response $response): Response
     {
-        MagentoResponseEvent::dispatch($response);
+        MagentoResponseEvent::dispatch($response, $this->connection);
 
         return $response;
     }

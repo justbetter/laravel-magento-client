@@ -32,6 +32,21 @@ return [
 
             /* Authentication method, choose either "oauth" or "token". */
             'authentication_method' => env('MAGENTO_AUTH_METHOD', 'token'),
+
+            /* Availability configuration. */
+            'availability' => [
+                /* The response codes that should trigger the availability check. */
+                'codes' => [502, 503, 504],
+
+                /* The amount of failed requests before the service is marked as unavailable. */
+                'threshold' => 10,
+
+                /* The timespan in minutes in which the failed requests should occur. */
+                'timespan' => 10,
+
+                /* The cooldown in minutes after the threshold is reached. */
+                'cooldown' => 2,
+            ],
         ],
     ],
 

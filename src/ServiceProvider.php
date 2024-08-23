@@ -2,12 +2,16 @@
 
 namespace JustBetter\MagentoClient;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoClient\Actions\AuthenticateRequest;
 use JustBetter\MagentoClient\Actions\BuildRequest;
+use JustBetter\MagentoClient\Actions\CheckMagento;
 use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
+use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\Http\Middleware\OAuthMiddleware;
+use JustBetter\MagentoClient\Listeners\StoreAvailabilityListener;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -30,6 +34,7 @@ class ServiceProvider extends BaseServiceProvider
         RequestAccessToken::bind();
         AuthenticateRequest::bind();
         BuildRequest::bind();
+        CheckMagento::bind();
 
         return $this;
     }
@@ -38,6 +43,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this
             ->bootConfig()
+            ->bootEvents()
             ->bootRoutes()
             ->bootMigrations();
     }
@@ -51,9 +57,16 @@ class ServiceProvider extends BaseServiceProvider
         return $this;
     }
 
+    protected function bootEvents(): static
+    {
+        Event::listen(MagentoResponseEvent::class, StoreAvailabilityListener::class);
+
+        return $this;
+    }
+
     protected function bootRoutes(): static
     {
-        if (! $this->app->routesAreCached()) {
+        if (! app()->routesAreCached()) {
             Route::prefix(config('magento.oauth.prefix'))
                 ->middleware([OAuthMiddleware::class])
                 ->group(__DIR__.'/../routes/web.php');
