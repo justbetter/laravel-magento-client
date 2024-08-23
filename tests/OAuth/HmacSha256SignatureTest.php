@@ -11,7 +11,7 @@ class HmacSha256SignatureTest extends TestCase
     /** @test */
     public function it_can_create_signatures(): void
     {
-        $clientCredentials = new ClientCredentials();
+        $clientCredentials = new ClientCredentials;
         $clientCredentials->setIdentifier('::oauth-consumer-key::');
         $clientCredentials->setSecret('::oauth-consumer-secret::');
 

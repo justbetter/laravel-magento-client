@@ -31,14 +31,14 @@ class OAuthProvider extends BaseProvider
 
         return $request->withMiddleware(
             Middleware::mapRequest(function (RequestInterface $request) use ($keys) {
-                $credentials = new ClientCredentials();
+                $credentials = new ClientCredentials;
                 $credentials->setIdentifier($keys['oauth_consumer_key']);
                 $credentials->setSecret($keys['oauth_consumer_secret']);
 
                 $server = new MagentoServer($credentials, new HmacSha256Signature($credentials));
                 $server->verifier = $keys['oauth_verifier'];
 
-                $tokenCredentials = new TokenCredentials();
+                $tokenCredentials = new TokenCredentials;
                 $tokenCredentials->setIdentifier($keys['access_token']);
                 $tokenCredentials->setSecret($keys['access_token_secret']);
 

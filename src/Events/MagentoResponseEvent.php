@@ -12,6 +12,5 @@ class MagentoResponseEvent
     public function __construct(
         public Response $response,
         public string $connection,
-    ) {
-    }
+    ) {}
 }

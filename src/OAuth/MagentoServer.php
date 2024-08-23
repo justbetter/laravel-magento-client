@@ -58,7 +58,7 @@ class MagentoServer extends Server
         /** @var string $secret */
         $secret = $data['oauth_token_secret'];
 
-        $temporaryCredentials = new TemporaryCredentials();
+        $temporaryCredentials = new TemporaryCredentials;
         $temporaryCredentials->setIdentifier($token);
         $temporaryCredentials->setSecret($secret);
 

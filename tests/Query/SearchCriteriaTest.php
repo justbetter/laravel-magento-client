@@ -193,7 +193,7 @@ class SearchCriteriaTest extends TestCase
                 'fields' => 'sku,price',
             ], $data);
 
-            throw new Exception();
+            throw new Exception;
         });
 
         $searchCriteria->dd();

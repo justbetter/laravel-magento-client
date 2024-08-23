@@ -18,8 +18,7 @@ class SearchCriteria
 
     public function __construct(
         protected Grammar $grammar
-    ) {
-    }
+    ) {}
 
     public function paginate(int $page, int $pageSize): static
     {

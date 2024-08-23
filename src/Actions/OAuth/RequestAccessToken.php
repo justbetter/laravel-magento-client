@@ -27,7 +27,7 @@ class RequestAccessToken implements RequestsAccessToken
             abort(403);
         }
 
-        $credentials = new ClientCredentials();
+        $credentials = new ClientCredentials;
         $credentials->setIdentifier($callback['oauth_consumer_key']);
         $credentials->setSecret($callback['oauth_consumer_secret']);
         $credentials->setCallbackUri(route('magento.oauth.callback', ['connection' => $connection]));

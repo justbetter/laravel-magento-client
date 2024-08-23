@@ -11,8 +11,7 @@ class BuildRequest implements BuildsRequest
 {
     public function __construct(
         protected AuthenticatesRequest $request
-    ) {
-    }
+    ) {}
 
     public function build(string $connection): PendingRequest
     {
