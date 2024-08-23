@@ -231,6 +231,13 @@ $client->graphql(
 
 You can view the tests for more examples.
 
+### Checking if Magento is available
+
+This client keeps track whether Magento is available by storing the count of any >=502 and <=504 response code in cache.
+You may use the `available()` method on the client in order to check if Magento is available.
+
+The threshold, timespan and status codes can be configured in the configuration file per connection.
+
 ## Testing
 
 This package uses Laravel's HTTP client so that you can fake the requests.

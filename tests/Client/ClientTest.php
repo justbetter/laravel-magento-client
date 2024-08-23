@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use JustBetter\MagentoClient\Client\Magento;
+use JustBetter\MagentoClient\Contracts\ChecksMagento;
 use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\Tests\TestCase;
+use Mockery\MockInterface;
 
 class ClientTest extends TestCase
 {
@@ -591,5 +593,19 @@ class ClientTest extends TestCase
         Event::assertDispatched(MagentoResponseEvent::class, function (MagentoResponseEvent $event): bool {
             return $event->response->ok() && $event->response->json('items') === ['item'];
         });
+    }
+
+    public function test_it_checks_available(): void
+    {
+        $this->mock(ChecksMagento::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('available')->with('default')->once()->andReturnTrue();
+            $mock->shouldReceive('available')->with('unavailable')->once()->andReturnFalse();
+        });
+
+        /** @var Magento $magento */
+        $magento = app(Magento::class);
+
+        $this->assertTrue($magento->available());
+        $this->assertFalse($magento->connection('unavailable')->available());
     }
 }
