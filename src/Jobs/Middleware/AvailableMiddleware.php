@@ -11,7 +11,7 @@ class AvailableMiddleware
 
     protected int $seconds;
 
-    public function __construct(?string $connection = null, int $seconds = 5)
+    public function __construct(?string $connection = null, int $seconds = 30)
     {
         $this->connection = $connection ?? config('magento.connection');
         $this->seconds = $seconds;
