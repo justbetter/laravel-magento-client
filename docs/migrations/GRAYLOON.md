@@ -98,7 +98,7 @@ class Example
             ->where('email', 'like', '%@example.com')
             ->get();
 
-        $this->magento->get('customers', $searchCriteria);
+        $this->magento->get('customers/search', $searchCriteria);
     }
 
     public function getStoreConfigs(): void
