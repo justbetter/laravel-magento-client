@@ -48,7 +48,7 @@ class MagentoServer extends Server
     {
         parse_str($body, $data);
 
-        if (! $data || ! is_array($data)) {
+        if (! $data ) {
             throw new CredentialsException('Unable to parse temporary credentials response.');
         }
 
@@ -80,13 +80,13 @@ class MagentoServer extends Server
         return 0;
     }
 
-    public function userEmail($data, TokenCredentials $tokenCredentials)
+    public function userEmail($data, TokenCredentials $tokenCredentials): ?string
     {
-        //
+        return null;
     }
 
-    public function userScreenName($data, TokenCredentials $tokenCredentials)
+    public function userScreenName($data, TokenCredentials $tokenCredentials): ?string
     {
-        //
+        return null;
     }
 }
