@@ -48,7 +48,7 @@ class MagentoServer extends Server
     {
         parse_str($body, $data);
 
-        if (! $data ) {
+        if (! $data) {
             throw new CredentialsException('Unable to parse temporary credentials response.');
         }
 
