@@ -13,6 +13,7 @@
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.20",
         "orchestra/testbench": "^9.0",
+        "pestphp/pest": "^3.7",
         "phpstan/phpstan-mockery": "^2.0",
         "phpunit/phpunit": "^11.5"
     },
@@ -52,7 +53,10 @@
         "coverage": "XDEBUG_MODE=coverage php vendor/bin/pest --coverage --min=100"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
