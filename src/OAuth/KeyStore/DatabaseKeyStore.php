@@ -11,7 +11,7 @@ class DatabaseKeyStore extends KeyStore
         /** @var ?OAuthKey $key */
         $key = OAuthKey::query()->firstWhere('magento_connection', '=', $connection);
 
-        return $key?->keys ?? [];
+        return $key->keys ?? [];
     }
 
     public function set(string $connection, array $data): void

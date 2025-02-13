@@ -28,7 +28,7 @@ class FileKeyStoreTest extends TestCase
         /** @var FileKeyStore $store */
         $store = KeyStore::instance();
 
-        /** @var string $encoded */
+        /** @var non-empty-string $encoded */
         $encoded = json_encode($content);
 
         Storage::disk($store->disk)->put($store->path.'/default.json', $encoded);
@@ -61,7 +61,7 @@ class FileKeyStoreTest extends TestCase
             'key' => 'value',
         ];
 
-        /** @var string $encoded */
+        /** @var non-empty-string $encoded */
         $encoded = json_encode($content);
 
         /** @var FileKeyStore $store */
