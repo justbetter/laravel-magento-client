@@ -51,7 +51,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_orWhere(): void
+    public function test_it_can_add_or_where(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
@@ -68,7 +68,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_multiple_orWhere(): void
+    public function test_it_can_add_multiple_or_where(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
@@ -97,7 +97,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_whereIn(): void
+    public function test_it_can_add_where_in(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -110,7 +110,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_orWhereIn(): void
+    public function test_it_can_add_or_where_in(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -128,7 +128,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_whereNotIn(): void
+    public function test_it_can_add_where_not_in(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereNotIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -141,7 +141,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_orWhereNotIn(): void
+    public function test_it_can_add_or_where_not_in(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereNotIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
@@ -199,7 +199,7 @@ class SearchCriteriaTest extends TestCase
         $searchCriteria->dd();
     }
 
-    public function test_it_can_add_whereNull(): void
+    public function test_it_can_add_where_null(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::sku::')
@@ -215,7 +215,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_orWhereNull(): void
+    public function test_it_can_add_or_where_null(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereNull('::some_field::')
@@ -230,7 +230,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_whereNotNull(): void
+    public function test_it_can_add_where_not_null(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::sku::')
@@ -246,7 +246,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_add_orWhereNotNull(): void
+    public function test_it_can_add_or_where_not_null(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->whereNotNull('::some_field::')
@@ -261,7 +261,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_orderBy(): void
+    public function test_it_can_order_by(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->orderBy('sku')
@@ -273,7 +273,7 @@ class SearchCriteriaTest extends TestCase
         ], $searchCriteria);
     }
 
-    public function test_it_can_orderByDesc(): void
+    public function test_it_can_order_by_desc(): void
     {
         $searchCriteria = SearchCriteria::make()
             ->orderByDesc('sku')
