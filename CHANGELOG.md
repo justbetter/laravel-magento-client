@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.6.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.7.0...main)
+## [2.7.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.7.0) - 2025-02-13
+
+### What's Changed
+* fix typo for docs by @fritsjustbetter in https://github.com/justbetter/laravel-magento-client/pull/44
+* Laravel 12 support by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/48
+* Drop PHP 8.1 support
+
+### New Contributors
+* @fritsjustbetter made their first contribution in https://github.com/justbetter/laravel-magento-client/pull/44
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.6.1...2.7.0
+
 ## [2.6.1](https://github.com/justbetter/laravel-magento-client/releases/tag/2.6.1) - 2024-09-09
 
 ### What's Changed
