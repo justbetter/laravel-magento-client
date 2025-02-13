@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.6.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.6.1...main)
+## [2.6.1](https://github.com/justbetter/laravel-magento-client/releases/tag/2.6.1) - 2024-09-09
+
+### What's Changed
+* Increase release time to 30 seconds by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/43
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.6.0...2.6.1
+
 ## [2.6.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.6.0) - 2024-08-23
 
 ### What's Changed
