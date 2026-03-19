@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class MultiConnectionTest extends TestCase
 {
@@ -27,7 +28,7 @@ class MultiConnectionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_do_requests_to_multiple_connections(): void
     {
         Http::fake([

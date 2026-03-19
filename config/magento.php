@@ -1,5 +1,7 @@
 <?php
 
+use JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore;
+
 return [
 
     'connection' => 'default',
@@ -62,6 +64,6 @@ return [
         'prefix' => 'magento/oauth',
 
         /* Class that manages how the keys are stored */
-        'keystore' => \JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore::class,
+        'keystore' => DatabaseKeyStore::class,
     ],
 ];

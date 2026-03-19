@@ -5,10 +5,11 @@ namespace JustBetter\MagentoClient\Tests\Providers;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Providers\BearerTokenProvider;
 use JustBetter\MagentoClient\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class BearerTokenProviderTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_authenticate_requests(): void
     {
         config('magento.connections.default.token', '::token::');

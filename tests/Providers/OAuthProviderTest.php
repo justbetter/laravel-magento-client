@@ -9,11 +9,12 @@ use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 use JustBetter\MagentoClient\Providers\OAuthProvider;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 
 class OAuthProviderTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_authenticate_requests(): void
     {
         $this->mock(FileKeyStore::class, function (MockInterface $mock): void {
