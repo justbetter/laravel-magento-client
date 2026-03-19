@@ -7,6 +7,7 @@ use JustBetter\MagentoClient\Models\OAuthKey;
 use JustBetter\MagentoClient\OAuth\KeyStore\DatabaseKeyStore;
 use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DatabaseKeyStoreTest extends TestCase
 {
@@ -19,7 +20,7 @@ class DatabaseKeyStoreTest extends TestCase
         config()->set('magento.oauth.keystore', DatabaseKeyStore::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data(): void
     {
         $content = [
@@ -38,7 +39,7 @@ class DatabaseKeyStoreTest extends TestCase
         $this->assertEquals($content, $data);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_data(): void
     {
         $content = [
@@ -53,7 +54,7 @@ class DatabaseKeyStoreTest extends TestCase
         $this->assertEquals($content, $data);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_merge_data(): void
     {
         $content = [
@@ -78,7 +79,7 @@ class DatabaseKeyStoreTest extends TestCase
         $this->assertEquals(array_merge($content, $new), $data);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_multiple_connections(): void
     {
         $store = KeyStore::instance();

@@ -9,11 +9,12 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use League\OAuth1\Client\Credentials\TemporaryCredentials;
 use League\OAuth1\Client\Credentials\TokenCredentials;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RequestAccessTokenTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_request_access_tokens(): void
     {
         $temporaryCredentials = new TemporaryCredentials;
@@ -71,7 +72,7 @@ class RequestAccessTokenTest extends TestCase
         $action->request('default', $key);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_throw_http_exceptions(): void
     {
         $this->expectException(HttpException::class);

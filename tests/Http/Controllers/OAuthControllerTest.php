@@ -6,10 +6,11 @@ use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
 use JustBetter\MagentoClient\OAuth\KeyStore\FileKeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 
 class OAuthControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_call_the_callback_endpoint(): void
     {
         $payload = [
@@ -33,7 +34,7 @@ class OAuthControllerTest extends TestCase
             ->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_validate_the_callback_endpoint(): void
     {
         $this
@@ -44,7 +45,7 @@ class OAuthControllerTest extends TestCase
             ->assertStatus(422);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_block_the_callback_endpoint_without_oauth_authentication(): void
     {
         $this->post(route('magento.oauth.callback', ['connection' => 'default']), [], [
@@ -52,7 +53,7 @@ class OAuthControllerTest extends TestCase
         ])->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_call_the_identity_endpoint(): void
     {
         $this->mock(RequestsAccessToken::class, function (MockInterface $mock): void {
@@ -73,7 +74,7 @@ class OAuthControllerTest extends TestCase
         ])->assertRedirect('::success_call_back::');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_validate_the_identity_endpoint(): void
     {
         $this
@@ -84,7 +85,7 @@ class OAuthControllerTest extends TestCase
             ->assertStatus(422);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_block_the_identity_endpoint_without_oauth_authentication(): void
     {
         $this->get(route('magento.oauth.identity', ['connection' => 'default']), [
