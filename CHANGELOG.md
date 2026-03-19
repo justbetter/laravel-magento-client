@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.7.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.8.0...main)
+## [2.8.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.8.0) - 2026-03-19
+
+### What's Changed
+* Adjust workflows by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/49
+* Add Laravel 13 support by @danny-de-wit in https://github.com/justbetter/laravel-magento-client/pull/50
+
+### New Contributors
+* @danny-de-wit made their first contribution in https://github.com/justbetter/laravel-magento-client/pull/50
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.7.0...2.8.0
+
 ## [2.7.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.7.0) - 2025-02-13
 
 ### What's Changed
