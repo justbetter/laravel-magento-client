@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Client;
 
 use JustBetter\MagentoClient\Actions\OAuth\RequestAccessToken;
@@ -12,7 +14,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class RequestAccessTokenTest extends TestCase
+final class RequestAccessTokenTest extends TestCase
 {
     #[Test]
     public function it_can_request_access_tokens(): void

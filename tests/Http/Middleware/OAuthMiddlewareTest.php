@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Http\Middleware;
 
 use Illuminate\Http\Response;
@@ -8,7 +10,7 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class OAuthMiddlewareTest extends TestCase
+final class OAuthMiddlewareTest extends TestCase
 {
     #[Test]
     public function it_can_pass(): void
@@ -19,9 +21,7 @@ class OAuthMiddlewareTest extends TestCase
         $middleware = app(OAuthMiddleware::class);
 
         /** @var Response $response */
-        $response = $middleware->handle(request(), function (): Response {
-            return response('passed');
-        });
+        $response = $middleware->handle(request(), fn (): Response => response('passed'));
 
         $this->assertEquals('passed', $response->getContent());
     }
@@ -33,8 +33,6 @@ class OAuthMiddlewareTest extends TestCase
 
         /** @var OAuthMiddleware $middleware */
         $middleware = app(OAuthMiddleware::class);
-        $middleware->handle(request(), function (): Response {
-            return response('passed');
-        });
+        $middleware->handle(request(), fn (): Response => response('passed'));
     }
 }

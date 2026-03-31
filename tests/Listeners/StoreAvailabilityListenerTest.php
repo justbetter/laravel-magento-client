@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Listeners;
 
 use Illuminate\Support\Facades\Http;
@@ -9,7 +11,7 @@ use JustBetter\MagentoClient\Listeners\StoreAvailabilityListener;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class StoreAvailabilityListenerTest extends TestCase
+final class StoreAvailabilityListenerTest extends TestCase
 {
     #[Test]
     public function it_can_be_available(): void

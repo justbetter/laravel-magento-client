@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Client;
 
 use Illuminate\Http\Client\Request;
@@ -8,7 +10,7 @@ use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class MultiConnectionTest extends TestCase
+final class MultiConnectionTest extends TestCase
 {
     protected function setUp(): void
     {

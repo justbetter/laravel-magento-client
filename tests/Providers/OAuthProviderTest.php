@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Providers;
 
 use Exception;
@@ -12,7 +14,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 
-class OAuthProviderTest extends TestCase
+final class OAuthProviderTest extends TestCase
 {
     #[Test]
     public function it_can_authenticate_requests(): void
@@ -40,7 +42,7 @@ class OAuthProviderTest extends TestCase
 
         try {
             $pendingRequest->withMiddleware(
-                Middleware::mapRequest(function (RequestInterface $request) use (&$authorization) {
+                Middleware::mapRequest(function (RequestInterface $request) use (&$authorization): void {
                     $authorization = $request->getHeader('Authorization');
 
                     throw new Exception('Cancel request execution');
@@ -62,7 +64,7 @@ class OAuthProviderTest extends TestCase
             $this->fail('Could not match any keys');
         }
 
-        $this->assertEquals([
+        $this->assertSame([
             'oauth_consumer_key',
             'oauth_nonce',
             'oauth_signature_method',

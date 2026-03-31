@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\OAuth\KeyStore;
 
 use Illuminate\Support\Facades\File;

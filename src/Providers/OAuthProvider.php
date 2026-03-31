@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Providers;
 
 use GuzzleHttp\Middleware;
@@ -11,6 +13,7 @@ use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\OAuth\MagentoServer;
 use League\OAuth1\Client\Credentials\ClientCredentials;
 use League\OAuth1\Client\Credentials\TokenCredentials;
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 
 class OAuthProvider extends BaseProvider
@@ -30,7 +33,7 @@ class OAuthProvider extends BaseProvider
         ]);
 
         return $request->withMiddleware(
-            Middleware::mapRequest(function (RequestInterface $request) use ($keys) {
+            Middleware::mapRequest(function (RequestInterface $request) use ($keys): MessageInterface {
                 $credentials = new ClientCredentials;
                 $credentials->setIdentifier($keys['oauth_consumer_key']);
                 $credentials->setSecret($keys['oauth_consumer_secret']);
@@ -46,7 +49,7 @@ class OAuthProvider extends BaseProvider
 
                 $data = Str::of($query)
                     ->explode('&')
-                    ->filter(fn (string $parameter): bool => strlen($parameter) > 0)
+                    ->filter(fn (string $parameter): bool => $parameter !== '')
                     ->mapWithKeys(function (string $parameter): array {
                         $pair = explode('=', $parameter);
 

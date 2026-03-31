@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Query;
 
 class SearchCriteria
@@ -151,7 +153,7 @@ class SearchCriteria
     ): static {
         $currentFilterGroup = $filterGroup ?? $this->currentFilterGroup;
 
-        $prefix = "searchCriteria[filter_groups][$currentFilterGroup][filters][$filterIndex]";
+        $prefix = sprintf('searchCriteria[filter_groups][%d][filters][%d]', $currentFilterGroup, $filterIndex);
 
         $this->wheres[$prefix.'[field]'] = $field;
         $this->wheres[$prefix.'[condition_type]'] = $this->grammar->getOperator($operator);
@@ -175,8 +177,8 @@ class SearchCriteria
     {
         $index = count($this->orders) / 2;
 
-        $this->orders["searchCriteria[sortOrders][$index][field]"] = $field;
-        $this->orders["searchCriteria[sortOrders][$index][direction]"] = $direction;
+        $this->orders[sprintf('searchCriteria[sortOrders][%s][field]', $index)] = $field;
+        $this->orders[sprintf('searchCriteria[sortOrders][%s][direction]', $index)] = $direction;
 
         return $this;
     }

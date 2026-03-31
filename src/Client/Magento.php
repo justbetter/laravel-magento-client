@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Client;
 
 use Closure;
@@ -19,7 +21,7 @@ class Magento
 
     public ?string $storeCode = null;
 
-    public ?Closure $interceptor;
+    public ?Closure $interceptor = null;
 
     public function __construct(
         protected BuildsRequest $request,
@@ -45,7 +47,7 @@ class Magento
     public function graphql(string $query, array $variables = []): Response
     {
         /** @var string $endpoint */
-        $endpoint = config("magento.connections.{$this->connection}.graphql_path");
+        $endpoint = config(sprintf('magento.connections.%s.graphql_path', $this->connection));
 
         /** @var Response $response */
         $response = $this->request()

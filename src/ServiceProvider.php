@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient;
 
 use Illuminate\Support\Facades\Event;
@@ -15,6 +17,7 @@ use JustBetter\MagentoClient\Listeners\StoreAvailabilityListener;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    #[\Override]
     public function register(): void
     {
         $this

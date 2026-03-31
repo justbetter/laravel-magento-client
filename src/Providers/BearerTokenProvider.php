@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Providers;
 
 use Illuminate\Http\Client\PendingRequest;

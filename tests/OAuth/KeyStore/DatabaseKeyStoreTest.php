@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\OAuth\KeyStore;
 
 use Illuminate\Support\Facades\Storage;
@@ -9,7 +11,7 @@ use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class DatabaseKeyStoreTest extends TestCase
+final class DatabaseKeyStoreTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -36,7 +38,7 @@ class DatabaseKeyStoreTest extends TestCase
 
         $data = $store->get('default');
 
-        $this->assertEquals($content, $data);
+        $this->assertSame($content, $data);
     }
 
     #[Test]
@@ -51,7 +53,7 @@ class DatabaseKeyStoreTest extends TestCase
 
         $data = $store->get('default');
 
-        $this->assertEquals($content, $data);
+        $this->assertSame($content, $data);
     }
 
     #[Test]
@@ -76,7 +78,7 @@ class DatabaseKeyStoreTest extends TestCase
 
         $data = $store->get('default');
 
-        $this->assertEquals(array_merge($content, $new), $data);
+        $this->assertSame(array_merge($content, $new), $data);
     }
 
     #[Test]
@@ -87,7 +89,7 @@ class DatabaseKeyStoreTest extends TestCase
         $store->set('connection_one', ['one']);
         $store->set('connection_two', ['two']);
 
-        $this->assertEquals(['one'], $store->get('connection_one'));
-        $this->assertEquals(['two'], $store->get('connection_two'));
+        $this->assertSame(['one'], $store->get('connection_one'));
+        $this->assertSame(['two'], $store->get('connection_two'));
     }
 }

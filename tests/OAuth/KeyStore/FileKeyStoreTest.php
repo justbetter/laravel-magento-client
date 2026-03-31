@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\OAuth\KeyStore;
 
 use Illuminate\Support\Facades\Storage;
@@ -8,7 +10,7 @@ use JustBetter\MagentoClient\OAuth\KeyStore\KeyStore;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class FileKeyStoreTest extends TestCase
+final class FileKeyStoreTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -89,7 +91,7 @@ class FileKeyStoreTest extends TestCase
         $store->set('connection_one', ['one']);
         $store->set('connection_two', ['two']);
 
-        $this->assertEquals(['one'], $store->get('connection_one'));
-        $this->assertEquals(['two'], $store->get('connection_two'));
+        $this->assertSame(['one'], $store->get('connection_one'));
+        $this->assertSame(['two'], $store->get('connection_two'));
     }
 }
