@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.8.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-client/compare/2.9.0...main)
+## [2.9.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.9.0) - 2026-04-02
+
+### What's Changed
+* Laravel 13 support by @VincentBean in https://github.com/justbetter/laravel-magento-client/pull/51
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-client/compare/2.8.0...2.9.0
+
 ## [2.8.0](https://github.com/justbetter/laravel-magento-client/releases/tag/2.8.0) - 2026-03-19
 
 ### What's Changed
