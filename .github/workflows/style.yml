@@ -4,8 +4,9 @@ on: ['push', 'pull_request']
 
 jobs:
     style:
-        name: Style
         runs-on: ubuntu-latest
+
+        name: Style
 
         steps:
             -   name: Checkout code

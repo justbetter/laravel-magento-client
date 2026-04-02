@@ -42,7 +42,7 @@ final class OAuthProviderTest extends TestCase
 
         try {
             $pendingRequest->withMiddleware(
-                Middleware::mapRequest(function (RequestInterface $request) use (&$authorization): void {
+                Middleware::mapRequest(function (RequestInterface $request) use (&$authorization): never {
                     $authorization = $request->getHeader('Authorization');
 
                     throw new Exception('Cancel request execution');

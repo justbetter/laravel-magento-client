@@ -14,7 +14,7 @@
         "laravel/pint": "^1.29",
         "orchestra/testbench": "^10.11|^11.0",
         "phpstan/phpstan-mockery": "^2.0",
-        "phpunit/phpunit": "^13.0",
+        "phpunit/phpunit": "^12.5|^13.0",
         "rector/rector": "^2.3"
     },
     "authors": [
@@ -47,9 +47,9 @@
             "@style",
             "@analyse",
             "@test",
+            "@coverage",
             "@rector"
         ],
-        "fix-style": "pint",
         "coverage": "XDEBUG_MODE=coverage php -d memory_limit=2G vendor/bin/phpunit --coverage-text --only-summary-for-coverage-text | grep -c \"100.00%\" | grep -q \"^3$\" && exit 0 || exit 1",
         "rector": "rector process --dry-run"
     },

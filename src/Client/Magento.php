@@ -229,7 +229,7 @@ class Magento
     {
         $request = $this->request->build($this->connection);
 
-        if (isset($this->interceptor)) {
+        if ($this->interceptor instanceof Closure) {
             call_user_func($this->interceptor, $request);
             $this->interceptor = null;
         }

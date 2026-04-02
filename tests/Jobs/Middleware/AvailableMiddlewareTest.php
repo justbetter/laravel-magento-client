@@ -41,7 +41,7 @@ final class AvailableMiddlewareTest extends TestCase
         });
 
         $middleware = new AvailableMiddleware('default');
-        $middleware->handle($job, function (): void {
+        $middleware->handle($job, function (): never {
             $this->fail('Job should not have run.');
         });
     }

@@ -75,8 +75,8 @@ final class SearchCriteriaTest extends TestCase
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
             ->orWhere('name', '=', '::some-name::')
-            ->where('some_attribute', '>', 10)
-            ->orWhere('another_attribute', '<=', 100)
+            ->where('some_attribute', '>', '10')
+            ->orWhere('another_attribute', '<=', '100')
             ->orWhere('test_attribute', '<>', '::some_value::')
             ->get();
 
@@ -190,7 +190,7 @@ final class SearchCriteriaTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        VarDumper::setHandler(function (array $data): void {
+        VarDumper::setHandler(function (array $data): never {
             $this->assertSame([
                 'fields' => 'sku,price',
             ], $data);
