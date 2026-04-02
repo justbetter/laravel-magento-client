@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\OAuth;
 
 use League\OAuth1\Client\Credentials\CredentialsException;
@@ -30,6 +32,7 @@ class MagentoServer extends Server
         return config('magento.connections.'.$this->connection.'.base_url').'/oauth/token/access';
     }
 
+    #[\Override]
     public function getTokenCredentials(TemporaryCredentials $temporaryCredentials, $temporaryIdentifier, $verifier)
     {
         $this->verifier = $verifier;
@@ -37,6 +40,7 @@ class MagentoServer extends Server
         return parent::getTokenCredentials($temporaryCredentials, $temporaryIdentifier, $verifier);
     }
 
+    #[\Override]
     protected function additionalProtocolParameters(): array
     {
         return [
@@ -44,11 +48,12 @@ class MagentoServer extends Server
         ];
     }
 
+    #[\Override]
     protected function createTemporaryCredentials($body): TemporaryCredentials
     {
         parse_str($body, $data);
 
-        if (! $data) {
+        if ($data === []) {
             throw new CredentialsException('Unable to parse temporary credentials response.');
         }
 

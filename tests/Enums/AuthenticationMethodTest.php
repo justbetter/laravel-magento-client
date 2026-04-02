@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Enums;
 
 use JustBetter\MagentoClient\Enums\AuthenticationMethod;
@@ -9,7 +11,7 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
-class AuthenticationMethodTest extends TestCase
+final class AuthenticationMethodTest extends TestCase
 {
     #[Test]
     #[DataProvider('providers')]
@@ -19,17 +21,15 @@ class AuthenticationMethodTest extends TestCase
         $this->assertInstanceOf($expectedProvider, $authenticationMethod->provider());
     }
 
-    public static function providers(): array
+    public static function providers(): \Iterator
     {
-        return [
-            [
-                AuthenticationMethod::Token,
-                BearerTokenProvider::class,
-            ],
-            [
-                AuthenticationMethod::OAuth,
-                OAuthProvider::class,
-            ],
+        yield [
+            AuthenticationMethod::Token,
+            BearerTokenProvider::class,
+        ];
+        yield [
+            AuthenticationMethod::OAuth,
+            OAuthProvider::class,
         ];
     }
 }

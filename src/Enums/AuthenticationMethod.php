@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Enums;
 
 use JustBetter\MagentoClient\Providers\BaseProvider;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Query;
 
 use Exception;
@@ -7,7 +9,7 @@ use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Symfony\Component\VarDumper\VarDumper;
 
-class SearchCriteriaTest extends TestCase
+final class SearchCriteriaTest extends TestCase
 {
     public function test_it_creates_pagination(): void
     {
@@ -15,7 +17,7 @@ class SearchCriteriaTest extends TestCase
             ->paginate(1, 10)
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[pageSize]' => 10,
             'searchCriteria[currentPage]' => 1,
         ], $searchCriteria);
@@ -27,7 +29,7 @@ class SearchCriteriaTest extends TestCase
             ->where('sku', '::some-sku::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::some-sku::',
@@ -41,7 +43,7 @@ class SearchCriteriaTest extends TestCase
             ->where('name', '::some-name::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::some-sku::',
@@ -58,7 +60,7 @@ class SearchCriteriaTest extends TestCase
             ->orWhere('name', '=', '::some-name::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::some-sku::',
@@ -73,12 +75,12 @@ class SearchCriteriaTest extends TestCase
         $searchCriteria = SearchCriteria::make()
             ->where('sku', '=', '::some-sku::')
             ->orWhere('name', '=', '::some-name::')
-            ->where('some_attribute', '>', 10)
-            ->orWhere('another_attribute', '<=', 100)
+            ->where('some_attribute', '>', '10')
+            ->orWhere('another_attribute', '<=', '100')
             ->orWhere('test_attribute', '<>', '::some_value::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::some-sku::',
@@ -103,7 +105,7 @@ class SearchCriteriaTest extends TestCase
             ->whereIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'in',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
@@ -117,7 +119,7 @@ class SearchCriteriaTest extends TestCase
             ->orWhereIn('ean', ['::sku_1::', '::sku_2::', '::sku_3::'])
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'in',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
@@ -134,7 +136,7 @@ class SearchCriteriaTest extends TestCase
             ->whereNotIn('sku', ['::sku_1::', '::sku_2::', '::sku_3::'])
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'nin',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
@@ -148,7 +150,7 @@ class SearchCriteriaTest extends TestCase
             ->orWhereNotIn('ean', ['::sku_1::', '::sku_2::', '::sku_3::'])
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'nin',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku_1::,::sku_2::,::sku_3::',
@@ -165,7 +167,7 @@ class SearchCriteriaTest extends TestCase
             ->select('items[sku,price]')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'fields' => 'items[sku,price]',
         ], $searchCriteria);
     }
@@ -176,7 +178,7 @@ class SearchCriteriaTest extends TestCase
             ->select(['items[sku,price]', 'total_count'])
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'fields' => 'items[sku,price],total_count',
         ], $searchCriteria);
     }
@@ -188,8 +190,8 @@ class SearchCriteriaTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        VarDumper::setHandler(function (array $data) {
-            $this->assertEquals([
+        VarDumper::setHandler(function (array $data): never {
+            $this->assertSame([
                 'fields' => 'sku,price',
             ], $data);
 
@@ -206,7 +208,7 @@ class SearchCriteriaTest extends TestCase
             ->whereNull('::some_field::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku::',
@@ -222,7 +224,7 @@ class SearchCriteriaTest extends TestCase
             ->orWhereNull('::some_other_field::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => '::some_field::',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'null',
             'searchCriteria[filter_groups][0][filters][1][field]' => '::some_other_field::',
@@ -237,7 +239,7 @@ class SearchCriteriaTest extends TestCase
             ->whereNotNull('::some_field::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'eq',
             'searchCriteria[filter_groups][0][filters][0][value]' => '::sku::',
@@ -253,7 +255,7 @@ class SearchCriteriaTest extends TestCase
             ->orWhereNotNull('::some_other_field::')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[filter_groups][0][filters][0][field]' => '::some_field::',
             'searchCriteria[filter_groups][0][filters][0][condition_type]' => 'notnull',
             'searchCriteria[filter_groups][0][filters][1][field]' => '::some_other_field::',
@@ -267,7 +269,7 @@ class SearchCriteriaTest extends TestCase
             ->orderBy('sku')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[sortOrders][0][field]' => 'sku',
             'searchCriteria[sortOrders][0][direction]' => 'ASC',
         ], $searchCriteria);
@@ -279,7 +281,7 @@ class SearchCriteriaTest extends TestCase
             ->orderByDesc('sku')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[sortOrders][0][field]' => 'sku',
             'searchCriteria[sortOrders][0][direction]' => 'DESC',
         ], $searchCriteria);
@@ -292,7 +294,7 @@ class SearchCriteriaTest extends TestCase
             ->orderByDesc('entity_id')
             ->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'searchCriteria[sortOrders][0][field]' => 'sku',
             'searchCriteria[sortOrders][0][direction]' => 'ASC',
             'searchCriteria[sortOrders][1][field]' => 'entity_id',

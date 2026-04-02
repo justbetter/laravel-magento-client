@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Client;
 
 use Illuminate\Http\Client\PendingRequest;
@@ -13,7 +15,7 @@ use JustBetter\MagentoClient\Events\MagentoResponseEvent;
 use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
 
-class ClientTest extends TestCase
+final class ClientTest extends TestCase
 {
     public function test_it_can_make_a_graphql_call(): void
     {
@@ -35,13 +37,10 @@ class ClientTest extends TestCase
         $this->assertTrue($response->ok());
         $this->assertEquals('EUR', $response->json('data.currency.base_currency_code'));
 
-        Http::assertSent(function (Request $request): bool {
-
-            return $request->method() === 'POST'
-                && $request->url() === 'magento/graphql'
-                && $request->body() === '{"query":"query { currency { base_currency_code } }","variables":["testing"]}'
-                && $request->header('Store') === ['default'];
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'POST'
+            && $request->url() === 'magento/graphql'
+            && $request->body() === '{"query":"query { currency { base_currency_code } }","variables":["testing"]}'
+            && $request->header('Store') === ['default']);
     }
 
     public function test_it_can_make_a_get_call(): void
@@ -60,10 +59,8 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(0, $response->json('items'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'GET' &&
-                $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'GET' &&
+            $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0');
     }
 
     public function test_it_can_make_a_post_call(): void
@@ -88,11 +85,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'POST' &&
-                $request->url() == 'magento/rest/all/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'POST' &&
+            $request->url() == 'magento/rest/all/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_an_async_post_call(): void
@@ -117,11 +112,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'POST' &&
-                $request->url() == 'magento/rest/all/async/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'POST' &&
+            $request->url() == 'magento/rest/all/async/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_a_bulk_post_call(): void
@@ -164,11 +157,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('request_items'));
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->method() === 'POST' &&
-                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
-                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'POST' &&
+            $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
+            $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]');
     }
 
     public function test_it_can_make_a_put_call(): void
@@ -193,11 +184,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'PUT' &&
-                $request->url() == 'magento/rest/all/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PUT' &&
+            $request->url() == 'magento/rest/all/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_an_async_put_call(): void
@@ -222,11 +211,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'PUT' &&
-                $request->url() == 'magento/rest/all/async/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PUT' &&
+            $request->url() == 'magento/rest/all/async/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_a_bulk_put_call(): void
@@ -269,11 +256,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('request_items'));
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->method() === 'PUT' &&
-                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
-                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PUT' &&
+            $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
+            $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]');
     }
 
     public function test_it_can_make_a_patch_call(): void
@@ -298,11 +283,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'PATCH' &&
-                $request->url() == 'magento/rest/all/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH' &&
+            $request->url() == 'magento/rest/all/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_an_async_patch_call(): void
@@ -327,11 +310,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('product'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'PATCH' &&
-                $request->url() == 'magento/rest/all/async/V1/products' &&
-                $request->body() === '{"product":{"sku":"::some-sku::"}}';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH' &&
+            $request->url() == 'magento/rest/all/async/V1/products' &&
+            $request->body() === '{"product":{"sku":"::some-sku::"}}');
     }
 
     public function test_it_can_make_a_bulk_patch_call(): void
@@ -374,11 +355,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('request_items'));
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->method() === 'PATCH' &&
-                $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
-                $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'PATCH' &&
+            $request->url() == 'magento/rest/all/async/bulk/V1/products' &&
+            $request->body() === '[{"product":{"sku":"::sku-1::"}},{"product":{"sku":"::sku-2::"}}]');
     }
 
     public function test_it_can_make_a_delete_call(): void
@@ -393,10 +372,8 @@ class ClientTest extends TestCase
         $response = $magento->delete('products/1');
         $this->assertEquals(204, $response->status());
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'DELETE' &&
-                $request->url() == 'magento/rest/all/V1/products/1';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE' &&
+            $request->url() == 'magento/rest/all/V1/products/1');
     }
 
     public function test_it_can_make_an_async_delete_call(): void
@@ -411,10 +388,8 @@ class ClientTest extends TestCase
         $response = $magento->deleteAsync('products/1');
         $this->assertEquals(204, $response->status());
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'DELETE' &&
-                $request->url() == 'magento/rest/all/async/V1/products/1';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE' &&
+            $request->url() == 'magento/rest/all/async/V1/products/1');
     }
 
     public function test_it_can_make_a_bulk_delete_call(): void
@@ -453,11 +428,9 @@ class ClientTest extends TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertCount(2, $response->json('request_items'));
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->method() === 'DELETE' &&
-                $request->url() == 'magento/rest/all/async/bulk/V1/products/bySku' &&
-                $request->body() === '[{"sku":"::sku-1::"},{"sku":"::sku-2::"}]';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'DELETE' &&
+            $request->url() == 'magento/rest/all/async/bulk/V1/products/bySku' &&
+            $request->body() === '[{"sku":"::sku-1::"},{"sku":"::sku-2::"}]');
     }
 
     public function test_it_can_get_results_lazily(): void
@@ -491,7 +464,7 @@ class ClientTest extends TestCase
 
         $collection = $products->collect();
 
-        $this->assertEquals(7, $collection->count());
+        $this->assertCount(7, $collection);
     }
 
     public function test_it_can_set_store_code(): void
@@ -505,9 +478,7 @@ class ClientTest extends TestCase
 
         $magento->store('store')->get('products');
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/store/V1/products';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/store/V1/products');
     }
 
     public function test_it_can_intersect_the_client_and_adjust_its_body_format(): void
@@ -519,7 +490,7 @@ class ClientTest extends TestCase
         /** @var Magento $magento */
         $magento = app(Magento::class);
 
-        $result = $magento->intercept(function (PendingRequest $request) {
+        $result = $magento->intercept(function (PendingRequest $request): void {
             $request->asForm();
         });
 
@@ -533,11 +504,9 @@ class ClientTest extends TestCase
         $this->assertTrue($response->ok());
         $this->assertCount(0, $response->json('items'));
 
-        Http::assertSent(function (Request $request) {
-            return $request->method() === 'GET' &&
-                $request->header('Content-Type')[0] === 'application/x-www-form-urlencoded' &&
-                $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->method() === 'GET' &&
+            $request->header('Content-Type')[0] === 'application/x-www-form-urlencoded' &&
+            $request->url() == 'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=10&searchCriteria%5BcurrentPage%5D=0');
     }
 
     public function test_it_resets_the_interceptor(): void
@@ -554,7 +523,7 @@ class ClientTest extends TestCase
         /** @var Magento $magento */
         $magento = app(Magento::class);
 
-        $magento->intercept(function (PendingRequest $request) {
+        $magento->intercept(function (PendingRequest $request): void {
             $request->withHeaders(['some-header' => '::test::']);
         })->post('products', [
             'product' => [
@@ -570,7 +539,7 @@ class ClientTest extends TestCase
 
         Http::assertSentInOrder([
             fn (Request $request) => $request->hasHeader('some-header'),
-            fn (Request $request) => ! $request->hasHeader('some-header'),
+            fn (Request $request): bool => ! $request->hasHeader('some-header'),
         ]);
     }
 
@@ -590,9 +559,7 @@ class ClientTest extends TestCase
             'searchCriteria[currentPage]' => 0,
         ]);
 
-        Event::assertDispatched(MagentoResponseEvent::class, function (MagentoResponseEvent $event): bool {
-            return $event->response->ok() && $event->response->json('items') === ['item'];
-        });
+        Event::assertDispatched(MagentoResponseEvent::class, fn (MagentoResponseEvent $event): bool => $event->response->ok() && $event->response->json('items') === ['item']);
     }
 
     public function test_it_checks_available(): void

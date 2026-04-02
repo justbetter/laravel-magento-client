@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Jobs\Middleware;
 
 use Closure;
@@ -9,12 +11,9 @@ class AvailableMiddleware
 {
     protected string $connection;
 
-    protected int $seconds;
-
-    public function __construct(?string $connection = null, int $seconds = 30)
+    public function __construct(?string $connection = null, protected int $seconds = 30)
     {
         $this->connection = $connection ?? config('magento.connection');
-        $this->seconds = $seconds;
     }
 
     public function handle(object $job, Closure $next): void

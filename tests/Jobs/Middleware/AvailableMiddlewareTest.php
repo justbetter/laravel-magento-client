@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Jobs\Middleware;
 
 use JustBetter\MagentoClient\Client\Magento;
@@ -9,7 +11,7 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class AvailableMiddlewareTest extends TestCase
+final class AvailableMiddlewareTest extends TestCase
 {
     #[Test]
     public function it_can_dispatch_jobs(): void
@@ -39,7 +41,7 @@ class AvailableMiddlewareTest extends TestCase
         });
 
         $middleware = new AvailableMiddleware('default');
-        $middleware->handle($job, function (): void {
+        $middleware->handle($job, function (): never {
             $this->fail('Job should not have run.');
         });
     }

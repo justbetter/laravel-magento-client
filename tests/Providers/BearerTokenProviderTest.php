@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Providers;
 
 use Illuminate\Support\Facades\Http;
@@ -7,7 +9,7 @@ use JustBetter\MagentoClient\Providers\BearerTokenProvider;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class BearerTokenProviderTest extends TestCase
+final class BearerTokenProviderTest extends TestCase
 {
     #[Test]
     public function it_can_authenticate_requests(): void
@@ -24,6 +26,6 @@ class BearerTokenProviderTest extends TestCase
 
         $authorization = data_get($options, 'headers.Authorization');
 
-        $this->assertEquals($authorization, 'Bearer ::token::');
+        $this->assertEquals('Bearer ::token::', $authorization);
     }
 }

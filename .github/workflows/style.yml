@@ -4,8 +4,9 @@ on: ['push', 'pull_request']
 
 jobs:
     style:
-        name: Style
         runs-on: ubuntu-latest
+
+        name: Style
 
         steps:
             -   name: Checkout code
@@ -22,9 +23,4 @@ jobs:
                 run: composer install
 
             -   name: Style
-                run: composer fix-style
-
-            -   name: Commit Changes
-                uses: stefanzweifel/git-auto-commit-action@v4
-                with:
-                    commit_message: Fix styling changes
+                run: composer style

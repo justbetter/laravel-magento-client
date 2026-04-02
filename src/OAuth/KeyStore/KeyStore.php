@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\OAuth\KeyStore;
 
 abstract class KeyStore

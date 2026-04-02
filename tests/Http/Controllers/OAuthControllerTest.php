@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Http\Controllers;
 
 use JustBetter\MagentoClient\Contracts\OAuth\RequestsAccessToken;
@@ -8,7 +10,7 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class OAuthControllerTest extends TestCase
+final class OAuthControllerTest extends TestCase
 {
     #[Test]
     public function it_can_call_the_callback_endpoint(): void

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Actions;
 
 use JustBetter\MagentoClient\Actions\CheckMagento;
 use JustBetter\MagentoClient\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckMagentoTest extends TestCase
+final class CheckMagentoTest extends TestCase
 {
     #[Test]
     public function it_can_be_available(): void

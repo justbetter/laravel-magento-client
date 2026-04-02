@@ -10,12 +10,12 @@
         "league/oauth1-client": "^1.10"
     },
     "require-dev": {
-        "larastan/larastan": "^3.0",
-        "laravel/pint": "^1.20",
-        "orchestra/testbench": "^10.0|^11.0",
-        "pestphp/pest": "^4.0",
+        "larastan/larastan": "^3.9",
+        "laravel/pint": "^1.29",
+        "orchestra/testbench": "^10.11|^11.0",
         "phpstan/phpstan-mockery": "^2.0",
-        "phpunit/phpunit": "^12.0"
+        "phpunit/phpunit": "^12.5|^13.0",
+        "rector/rector": "^2.3"
     },
     "authors": [
         {
@@ -47,10 +47,11 @@
             "@style",
             "@analyse",
             "@test",
-            "@coverage"
+            "@coverage",
+            "@rector"
         ],
-        "fix-style": "pint",
-        "coverage": "XDEBUG_MODE=coverage php vendor/bin/pest --coverage --min=100"
+        "coverage": "XDEBUG_MODE=coverage php -d memory_limit=2G vendor/bin/phpunit --coverage-text --only-summary-for-coverage-text | grep -c \"100.00%\" | grep -q \"^3$\" && exit 0 || exit 1",
+        "rector": "rector process --dry-run"
     },
     "config": {
         "sort-packages": true,

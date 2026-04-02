@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoClient\Tests\Providers;
 
 use JustBetter\MagentoClient\OAuth\HmacSha256Signature;
@@ -7,7 +9,7 @@ use JustBetter\MagentoClient\Tests\TestCase;
 use League\OAuth1\Client\Credentials\ClientCredentials;
 use PHPUnit\Framework\Attributes\Test;
 
-class HmacSha256SignatureTest extends TestCase
+final class HmacSha256SignatureTest extends TestCase
 {
     #[Test]
     public function it_can_create_signatures(): void
