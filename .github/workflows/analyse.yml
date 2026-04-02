@@ -3,7 +3,7 @@ name: analyse
 on: ['push', 'pull_request']
 
 jobs:
-    test:
+    analyse:
         runs-on: ubuntu-latest
 
         strategy:
